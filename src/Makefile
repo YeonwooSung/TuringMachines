@@ -15,9 +15,9 @@ jar:
 	@echo "Main-Class: Main" >> manifest.txt
 	@echo "" >> manifest.txt
 
-	jar -cmf manifest.txt JARNAME.jar $(classes)
+	jar -cmf manifest.txt runTM.jar $(classes)
 
 clean:
 	rm -rf *.class
 	rm manifest.txt
-	rm JARNAME.jar
+	rm runTM.jar
