@@ -13,7 +13,7 @@ public class Main {
      */
     public static void printUsage() {
         System.out.println("Usage: ");
-        System.out.println("runtm <desription-file> <input>");
+        System.out.println("\truntm <desription-file> <input>");
     }
 
 
@@ -36,9 +36,9 @@ public class Main {
         State startState = Util.readMachine(descriptionPath);
 
         // scanner to read the file via FileInputStream
-        Scanner inputScanner = new Scanner(new FileInputStream(inputPath));
+        Scanner sc = new Scanner(new FileInputStream(inputPath));
 
-        String input = inputScanner.nextLine(); //read a line
+        String input = sc.nextLine(); //read a line
 
         TuringMachine tm = new TuringMachine(startState, input, true);
 
@@ -51,6 +51,8 @@ public class Main {
         }
 
         System.out.println("Number of transitions necessary: " + tm.getTransitionCount());
+
+        sc.close();
     }
 
 }
