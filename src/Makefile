@@ -1,5 +1,5 @@
 JAVAC=javac
-sources = $(wildcard src/*.java)
+sources = $(wildcard *.java)
 classes = $(sources:.java=.class)
 
 all: myProgram jar
@@ -18,5 +18,6 @@ jar:
 	jar -cmf manifest.txt JARNAME.jar $(classes)
 
 clean:
-	rm -f *.class
+	rm -rf *.class
 	rm manifest.txt
+	rm JARNAME.jar
