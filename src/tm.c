@@ -15,8 +15,8 @@ void print_message();
 void print_line();
 void update_string(char, char);
 
-char string[STR_LENGTH];
-int head, string_length;
+
+//TODO
 
 
 /**
@@ -123,11 +123,7 @@ void readDescription(char *filePath, char isDeterministic, DState *d, NState *n)
         size_t counter = 0; //to count the number of splited strings
         char **splited = splitStr(str, ' ', &counter);
 
-        free(splited); //TODO
-        //printf("hi");
-
         if (strcmp(splited[0], "states") == 0) {
-            printf("number of states: %s", splited[1]); //TODO
             num_of_states = atoi(splited[1]);
         }
     }
@@ -145,37 +141,26 @@ void readDescription(char *filePath, char isDeterministic, DState *d, NState *n)
                 // check if this is the initial state.
                 if (d_tmp) {
 
-                    printf("test2-1");
-
                     d_tmp->next = (DState *) malloc(sizeof(DState));
                     d_tmp = d_tmp->next;
 
                     // use if-else statement to check if the new state is the accepted state or rejected state.
                     if (strchr(line, '+')) {
-                        printf("test2 +");
                         size_t counter = 0; //to count the number of splited strings
                         char **splited = splitStr(line, ' ', &counter);
 
                         d_tmp->accept = 'a';
                         d_tmp->name = strdup(splited[0]);
 
-                        printf("test2 + (1)");
-
                         free(splited); //TODO
-                        printf("test2 + (2)");
                     } else if (strchr(line, '-')) {
-                        printf("test2 -");
                         size_t counter = 0; //to count the number of splited strings
                         char **splited = splitStr(line, ' ', &counter);
-                        printf("test2 - (1)");
 
                         d_tmp->accept = 'r';
                         d_tmp->name = strdup(splited[0]);
 
-                        printf("test2 - (2)");
-
                         free(splited); //TODO
-                        printf("test2 - (3)");
                     } else {
                         d_tmp->accept = 0;
                         d_tmp->name = strdup(line);
@@ -184,11 +169,7 @@ void readDescription(char *filePath, char isDeterministic, DState *d, NState *n)
                     d_tmp->next = NULL; //set the next node as NULL
 
                 } else {
-                    printf("test1-1");
-
                     d_tmp = d;
-
-                    printf("test1-2");
 
                     // use if-else statement to check if the new state is the accepted state or rejected state.
                     if (strchr(line, '+')) {
@@ -212,19 +193,73 @@ void readDescription(char *filePath, char isDeterministic, DState *d, NState *n)
                         d_tmp->name = strdup(line);
                     }
 
-                    printf("test1-3");
-
                     d_tmp->next = NULL; //set the next node as NULL
 
                 }
 
-            } else {
+            } else { //TODO need to test nondeterministic TM
 
                 // check if this is the initial state.
                 if (n_tmp) {
-                    //not first
+
+                    n_tmp->next = (NState *) malloc(sizeof(NState));
+                    n_tmp = n_tmp->next;
+
+                    // use if-else statement to check if the new state is the accepted state or rejected state.
+                    if (strchr(line, '+')) {
+                        size_t counter = 0; //to count the number of splited strings
+                        char **splited = splitStr(line, ' ', &counter);
+
+                        n_tmp->accept = 'a';
+                        n_tmp->name = strdup(splited[0]);
+
+                        free(splited); //TODO
+
+                    } else if (strchr(line, '-')) {
+                        size_t counter = 0; //to count the number of splited strings
+                        char **splited = splitStr(line, ' ', &counter);
+
+                        n_tmp->accept = 'r';
+                        n_tmp->name = strdup(splited[0]);
+
+                        free(splited); //TODO
+
+                    } else {
+                        n_tmp->accept = 0;
+                        n_tmp->name = strdup(line);
+                    }
+
+                    n_tmp->next = NULL; //set the next node as NULL
+
                 } else {
-                    //
+                    n_tmp = n;
+
+                    // use if-else statement to check if the new state is the accepted state or rejected state.
+                    if (strchr(line, '+')) {
+                        size_t counter = 0; //to count the number of splited strings
+                        char **splited = splitStr(line, ' ', &counter);
+
+                        n_tmp->accept = 'a';
+                        n_tmp->name = strdup(splited[0]);
+
+                        free(splited); //TODO
+
+                    } else if (strchr(line, '-')) {
+                        size_t counter = 0; //to count the number of splited strings
+                        char **splited = splitStr(line, ' ', &counter);
+
+                        n_tmp->accept = 'r';
+                        n_tmp->name = strdup(splited[0]);
+
+                        free(splited); //TODO
+
+                    } else {
+                        n_tmp->accept = 0;
+                        n_tmp->name = strdup(line);
+                    }
+
+                    n_tmp->next = NULL; //set the next node as NULL
+
                 }
 
             }
@@ -232,9 +267,36 @@ void readDescription(char *filePath, char isDeterministic, DState *d, NState *n)
         }
     }
 
+    Alphabets *list = (Alphabets *) malloc(sizeof(Alphabets));
+
+    //read line to get the number of states
+    if (getline(&line, &len, f) != -1) {
+        char *str = (char *) malloc(len + 1);
+
+        strcpy(str, line);
+
+        size_t counter = 0; //to count the number of splited strings
+        char **splited = splitStr(str, ' ', &counter);
+
+        list->alphabet = *splited[2];
+
+        Alphabets *tmp = list;
+
+        //TODO alphabets
+        printf("Number of tokens: %lu\n", counter);
+        for (int i = 3; i < counter; i++) {
+            tmp->next = (Alphabets *)malloc(sizeof(Alphabets));
+            tmp = tmp->next;
+            tmp->alphabet = *splited[i];
+
+            printf("%c ", *splited[i]);
+        }
+        tmp->next = NULL;
+    }
+
     //use getline() to read a line from the description file
     while (getline(&line, &len, f) != -1) {
-        printf("%s", line); //TODO debugging
+        printf("\n%s!\n", line); //TODO debugging
 
         //
     }
@@ -264,22 +326,22 @@ int main(int argc, char *argv[]) {
 
     /* Reading data from user input */
 
-    printf("here!!");
-    DState *d = (DState *)malloc(sizeof(DState));
-    NState *n = NULL;
-    printf("here~~~");
-
     /* Checks if file input as commandline argument is present */
     if (argc > 2) {
+
+        //check if the number of command line arguments is 3
         if (argc  != 3) {
+            DState *d = NULL;
+            NState *n = (NState *)malloc(sizeof(NState));
+
+            readDescription(argv[1], 0, d, n);
+
             //TODO nondeterministic TM
         } else {
-
-            printf("here");
+            DState *d = (DState *)malloc(sizeof(DState));
+            NState *n = NULL;
 
             readDescription(argv[1], 1, d, n);
-
-            //TODO read description file and get states
 
             //TODO read input file
         }

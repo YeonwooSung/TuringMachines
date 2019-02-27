@@ -6,7 +6,7 @@ typedef struct transition {
     char inputSymbol;   //character for the input tape symbol
     char outputSymbol;  //character for the output tape symbol
     char *newStateName; //name of the new state
-}Transition;
+} Transition;
 
 // state for the deterministic turing machine
 typedef struct state_deterministic {
@@ -20,7 +20,7 @@ typedef struct state_deterministic {
 typedef struct transitionList {
     Transition *t;
     struct transitionList *next;
-}TList;
+} TList;
 
 // state for the nondeterministic turing machine
 typedef struct state_nondeterministic {
@@ -29,5 +29,11 @@ typedef struct state_nondeterministic {
     TList *list; //list of the transitions
     struct state_nondeterministic *next;
 } NState;
+
+// A linked list of symbol alphabets
+typedef struct alphabets {
+    char alphabet;
+    struct alphabets *next;
+} Alphabets;
 
 #endif //TM_H
