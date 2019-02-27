@@ -21,10 +21,10 @@ public class Main {
      * The main method of the RunTM class, which is the starting point of the Turing Machine.
      */
     public static void main(String[] args) {
-        try {
-            Scanner sc;
-            Scanner sc_des;
+        Scanner sc = null;
+        Scanner sc_des = null;
 
+        try {
             // Check if the user passed the suitable number of command line arguments (2).
             if (args.length < 1) {
 
@@ -54,19 +54,26 @@ public class Main {
             TuringMachineState tms = tm.run();
 
             if (tms != null) {
-                System.out.println("The machine accepted the input.");
+                System.out.println("accepted");
             } else {
                 System.out.println("The machine did not accept the input.");
             }
 
             System.out.println("Number of transitions necessary: " + tm.getTransitionCount());
 
-            sc.close();
-            sc_des.close();
         } catch (Exception e) {
             System.out.println("input error");
 
             System.exit(2);
+        } finally {
+
+            try {
+            sc.close();
+            sc_des.close();
+            } catch (Exception e) {
+                e.getMessage();
+            }
+
         }
     }
 

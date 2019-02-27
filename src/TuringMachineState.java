@@ -6,10 +6,6 @@ import static java.lang.Integer.max;
 
 
 public class TuringMachineState {
-    private static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
-    private static final String BLACK_BOLD = "\033[1;30m";
-    private static final String ANSI_RESET = "\u001B[0m";
-
     private State currentState;
     private int position;
     private int transitionCount;
@@ -101,7 +97,7 @@ public class TuringMachineState {
 
 
     void printState() {
-        System.out.println("State: " + currentState.getStateName());
+        System.out.println(currentState.getStateName());
 
         LinkedList<Integer> positions = new LinkedList<>(tape.keySet());
         positions.sort(Integer::compareTo);
@@ -109,30 +105,13 @@ public class TuringMachineState {
         int startPos = Math.min(position, positions.getFirst());
         int endPos = Math.max(positions.getLast(), position);
 
-        System.out.print("╔═");
-        for (int i = startPos; i < endPos; ++i) {
-            System.out.print("╦═");
-        }
-        System.out.println("╗");
-
         for (int i = startPos; i <= endPos; ++i) {
-            System.out.print("║");
             if (i == position) {
-                System.out.print(ANSI_PURPLE_BACKGROUND + BLACK_BOLD);
-                System.out.print(tape.getOrDefault(i, '_'));
-                System.out.print(ANSI_RESET);
+                System.out.println(tape.getOrDefault(i, '_'));
             } else {
-                System.out.print(tape.getOrDefault(i, '_'));
+                System.out.println(tape.getOrDefault(i, '_'));
             }
         }
-        System.out.println("║");
-
-        System.out.print("╚═");
-        for (int i = startPos; i < endPos; ++i) {
-            System.out.print("╩═");
-        }
-        System.out.println("╝");
-        System.out.println();
     }
 
     public int getTransitionCount() {
