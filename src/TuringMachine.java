@@ -49,7 +49,7 @@ public class TuringMachine {
     /**
      * 
      */
-    public TuringMachineState run() {
+    public TuringMachineState run() throws Exception { //TODO add exception
         this.transitionCount = 0;
 
         while (!hasAcceptingState()) {
@@ -57,7 +57,8 @@ public class TuringMachine {
             this.transitionCount += 1;
 
             if (this.quantumStates.isEmpty()) {
-                return null;
+                //return null;
+                throw new Exception();
             }
         }
         return getAcceptingMachine();

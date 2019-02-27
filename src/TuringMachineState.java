@@ -2,6 +2,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 import static java.lang.Integer.max;
 
 
@@ -35,6 +36,14 @@ public class TuringMachineState {
             tape.put(entry.getKey(), entry.getValue());
         }
     }
+
+
+    public List<Character> getListOfSymbols() {
+        List<Character> list = new ArrayList<Character>(tape.values());
+
+        return list;
+    }
+
 
     /**
      * Write a symbol to the tape

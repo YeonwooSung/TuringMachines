@@ -61,6 +61,7 @@ public class Util {
 
         String moveRegex = "[RSL]";
 
+
         // loop until the scanner reads all descriptions
         while (sc.hasNext()) {
             String currentStateStr;
@@ -75,9 +76,8 @@ public class Util {
             }
 
 
-            //get the input tape symbol
-            String inputTape = sc.next(alphabetRegex);
-
+            //get the input symbol
+            String input = sc.next(alphabetRegex);
 
             String nextStateStr;
 
@@ -90,7 +90,7 @@ public class Util {
                 throw new IOException("Unknown state: " + sc.next());
             }
 
-            String outputTape = sc.next(alphabetRegex);
+            String output = sc.next(alphabetRegex);
             String moveSym = sc.next(moveRegex);
 
             State currentState = states.get(currentStateStr);
@@ -99,7 +99,7 @@ public class Util {
 
             Move move = Move.fromSymbol(moveSym);
 
-            currentState.addTransition(inputTape.charAt(0), new Transition(nextState, outputTape.charAt(0), move));
+            currentState.addTransition(input.charAt(0), new Transition(nextState, output.charAt(0), move));
         }
 
         return startState;

@@ -1,6 +1,6 @@
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Scanner;
+import java.util.List;
 
 
 /**
@@ -63,9 +63,12 @@ public class Main {
                 System.out.println("not accepted");
             }
 
-            System.out.println(tm.getTransitionCount());
+            System.out.println(tm.getTransitionCount() - 1);
 
-            System.out.println(tm.getFinalState_DTM());
+            //System.out.println(tm.getFinalState_DTM());
+            List<Character> list = tms.getListOfSymbols();
+
+            System.out.println(list.get(0));
 
         } catch (Exception e) {
             System.out.println("input error");
