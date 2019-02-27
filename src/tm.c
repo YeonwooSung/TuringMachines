@@ -113,6 +113,7 @@ void readDescription(char *filePath, char isDeterministic, DState **d, NState **
     size_t len = 0;
 
     size_t num_of_states = 0;
+    printf("Start");
 
     //read line to get the number of states
     if (getline(&line, &len, f) != -1) {
