@@ -228,9 +228,11 @@ void readDescription(char *filePath, char isDeterministic, DState *d, NState *n)
                         n_tmp->accept = 0;
                         n_tmp->name = strdup(line);
 
+                        printf("%s, %lu\n", n_tmp->name, strlen(n_tmp->name)); //TODO
+
                         n_tmp->name[(strlen(n_tmp->name) - 1)] = '\0';
 
-                        printf("%s, %d\n", n_tmp->name, strlen(n_tmp->name)); //TODO
+                        printf("%s, %lu\n", n_tmp->name, strlen(n_tmp->name)); //TODO
                     }
 
                     n_tmp->next = NULL; //set the next node as NULL
