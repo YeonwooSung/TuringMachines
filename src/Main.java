@@ -68,7 +68,11 @@ public class Main {
             //System.out.println(tm.getFinalState_DTM());
             List<Character> list = tms.getListOfSymbols();
 
-            System.out.println(list.get(0));
+            for (int i = 0; i < list.size() - 1; i++) {
+                System.out.print(list.get(i));
+            }
+
+            System.out.println();
 
         } catch (Exception e) {
             System.out.println("input error");
