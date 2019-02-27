@@ -140,26 +140,37 @@ void readDescription(char *filePath, char isDeterministic, DState **d, NState **
                 // check if this is the initial state.
                 if (d_tmp) {
 
+                    printf("test2-1");
+
                     d_tmp->next = (DState *) malloc(sizeof(DState));
                     d_tmp = d_tmp->next;
 
                     // use if-else statement to check if the new state is the accepted state or rejected state.
                     if (strchr(line, '+')) {
+                        printf("test2 +");
                         size_t counter = 0; //to count the number of splited strings
                         char **splited = splitStr(line, ' ', &counter);
 
                         d_tmp->accept = 'a';
                         d_tmp->name = strdup(splited[0]);
 
+                        printf("test2 + (1)");
+
                         free(splited); //TODO
+                        printf("test2 + (2)");
                     } else if (strchr(line, '-')) {
+                        printf("test2 -");
                         size_t counter = 0; //to count the number of splited strings
                         char **splited = splitStr(line, ' ', &counter);
+                        printf("test2 - (1)");
 
                         d_tmp->accept = 'r';
                         d_tmp->name = strdup(splited[0]);
 
+                        printf("test2 - (2)");
+
                         free(splited); //TODO
+                        printf("test2 - (3)");
                     } else {
                         d_tmp->accept = 0;
                         d_tmp->name = strdup(line);
@@ -168,9 +179,12 @@ void readDescription(char *filePath, char isDeterministic, DState **d, NState **
                     d_tmp->next = NULL; //set the next node as NULL
 
                 } else {
+                    printf("test1-1");
                     *d = (DState *) malloc(sizeof(DState));
 
                     d_tmp = *d;
+
+                    printf("test1-2");
 
                     // use if-else statement to check if the new state is the accepted state or rejected state.
                     if (strchr(line, '+')) {
@@ -193,6 +207,8 @@ void readDescription(char *filePath, char isDeterministic, DState **d, NState **
                         d_tmp->accept = 0;
                         d_tmp->name = strdup(line);
                     }
+
+                    printf("test1-3");
 
                     d_tmp->next = NULL; //set the next node as NULL
 
