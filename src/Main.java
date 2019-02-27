@@ -20,50 +20,57 @@ public class Main {
     /**
      * The main method of the RunTM class, which is the starting point of the Turing Machine.
      */
-    public static void main(String[] args) throws IOException {
-        String descriptionPath, inputPath;
+    public static void main(String[] args) {
+        try {
+            String descriptionPath, inputPath;
 
-        Scanner sc;
-        Scanner sc_des;
+            Scanner sc;
+            Scanner sc_des;
 
-        // Check if the user passed the suitable number of command line arguments (2).
-        if (args.length == 2) {
+            // Check if the user passed the suitable number of command line arguments (2).
+            if (args.length == 2) {
 
-            // The first command line argument should be the file path to the description file.
-            descriptionPath = args[0];
-            // The second command line argument should be the file path to the input file.
-            inputPath = args[1];
+                // The first command line argument should be the file path to the description file.
+                descriptionPath = args[0];
+                // The second command line argument should be the file path to the input file.
+                inputPath = args[1];
 
-            sc = new Scanner(new FileInputStream(inputPath));
-            sc_des = new Scanner(new FileInputStream(descriptionPath));
+                sc = new Scanner(new FileInputStream(inputPath));
+                sc_des = new Scanner(new FileInputStream(descriptionPath));
 
-        } else {
+            } else {
 
-            sc = new Scanner(System.in);
-            sc_des = new Scanner(System.in);
+                sc = new Scanner(System.in);
+                sc_des = new Scanner(System.in);
 
-            descriptionPath = null;
+                descriptionPath = null;
+            }
+
+            // Read
+            State startState = Util.readMachine(descriptionPath, sc_des);
+
+            String input = sc.nextLine(); //read a line
+
+            TuringMachine tm = new TuringMachine(startState, input, true);
+
+            TuringMachineState tms = tm.run();
+
+            if (tms != null) {
+                System.out.println("The machine accepted the input.");
+            } else {
+                System.out.println("The machine did not accept the input.");
+            }
+
+            System.out.println("Number of transitions necessary: " + tm.getTransitionCount());
+
+            sc.close();
+            sc_des.close();
+        } catch (IOException e) {
+            System.out.println("input error");
+
+            System.exit(2);
         }
-
-        // Read
-        State startState = Util.readMachine(descriptionPath, sc_des);
-
-        String input = sc.nextLine(); //read a line
-
-        TuringMachine tm = new TuringMachine(startState, input, true);
-
-        TuringMachineState tms = tm.run();
-
-        if (tms != null) {
-            System.out.println("The machine accepted the input.");
-        } else {
-            System.out.println("The machine did not accept the input.");
-        }
-
-        System.out.println("Number of transitions necessary: " + tm.getTransitionCount());
-
-        sc.close();
-        sc_des.close();
     }
+
 
 }
