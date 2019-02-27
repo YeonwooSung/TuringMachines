@@ -12,6 +12,8 @@ public class State {
 
     private String stateName;
     private boolean isAccepted;
+
+    // transitions takes input tape symbol as key, and a list of transition instances as value
     private Map<Character, List<Transition>> transitions;
 
     /**

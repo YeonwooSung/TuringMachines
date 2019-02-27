@@ -24,8 +24,10 @@ public class Util {
             boolean accept = false;
 
             if (sc.hasNext("\\+")) {
-                sc.next("\\+");
+                sc.next("\\+"); //TODO need to test
                 accept = true;
+            } else if (sc.hasNext("\\-")) {
+                sc.next("\\-"); //TODO need to test
             }
 
             State state = new State(stateName, accept);
@@ -49,7 +51,8 @@ public class Util {
         for (int i = 0; i < alphabetSize; ++i) {
             String letter = sc.next("[^\\s]");
 
-            assert letter.length() == 1; //TODO
+            // use the assert to make sure that the length of the symbol alphabet is 1
+            assert letter.length() == 1;
 
             alphabet.add(letter);
         }
@@ -65,38 +68,40 @@ public class Util {
 
         // loop until the scanner reads all descriptions
         while (sc.hasNext()) {
-            String currentStateSym;
+            String currentStateStr;
 
             if (sc.hasNext(stateRegex)) {
-                currentStateSym = sc.next(stateRegex);
+                currentStateStr = sc.next(stateRegex);
             } else {
                 throw new IOException("Unknown state: " + sc.next());
             }
 
 
-            //TODO comment!!
-            String currentSymbol = sc.next(alphabetRegex);
+            //get the input tape symbol
+            String inputTape = sc.next(alphabetRegex);
 
 
-            String nextStateSym;
+            String nextStateStr;
 
             if (sc.hasNext(stateRegex)) {
-                nextStateSym = sc.next(stateRegex);
+                nextStateStr = sc.next(stateRegex);
             } else {
                 throw new IOException("Unknown state: " + sc.next());
             }
 
-            String rewriteSymbol = sc.next(alphabetRegex);
+            String outputTape = sc.next(alphabetRegex);
             String moveSym = sc.next(moveRegex);
 
-            State currentState = states.get(currentStateSym);
+            State currentState = states.get(currentStateStr);
 
-            State nextState = states.get(nextStateSym);
+            State nextState = states.get(nextStateStr);
 
             Move move = Move.fromSymbol(moveSym);
 
-            currentState.addTransition(currentSymbol.charAt(0), new Transition(nextState, rewriteSymbol.charAt(0), move));
+            currentState.addTransition(inputTape.charAt(0), new Transition(nextState, outputTape.charAt(0), move));
         }
+
+        sc.close(); //close the scanner
 
         return startState;
     }
