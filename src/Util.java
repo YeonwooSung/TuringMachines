@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 
 public class Util {
-    public static State readMachine(String path, Scanner sc) throws IOException, NoSuchElementException {
+    public static State readMachine(Scanner sc) throws IOException, NoSuchElementException {
         sc.next("states");
 
         int noStates = sc.nextInt();

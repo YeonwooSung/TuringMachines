@@ -22,38 +22,30 @@ public class Main {
      */
     public static void main(String[] args) {
         try {
-            String descriptionPath, inputPath;
-
-            System.out.println(args.length);
-
-            for (int i = 0; i < args.length; i++) {
-                System.out.println(args[i]);
-            }
-
             Scanner sc;
             Scanner sc_des;
 
             // Check if the user passed the suitable number of command line arguments (2).
-            if (args.length == 2) {
-
-                // The first command line argument should be the file path to the description file.
-                descriptionPath = args[0];
-                // The second command line argument should be the file path to the input file.
-                inputPath = args[1];
-
-                sc = new Scanner(new FileInputStream(inputPath));
-                sc_des = new Scanner(new FileInputStream(descriptionPath));
-
-            } else {
+            if (args.length < 1) {
 
                 sc = new Scanner(System.in);
                 sc_des = new Scanner(System.in);
 
-                descriptionPath = null;
+            } else if (args.length < 2) {
+                
+                sc = new Scanner(System.in);
+                sc_des = new Scanner(new FileInputStream(args[0]));
+
+            } else if (args.length != 3) {
+                sc = new Scanner(new FileInputStream(args[1]));
+                sc_des = new Scanner(new FileInputStream(args[0]));
+            } else {
+                sc = new Scanner(new FileInputStream(args[2]));
+                sc_des = new Scanner(new FileInputStream(args[1]));
             }
 
             // Read
-            State startState = Util.readMachine(descriptionPath, sc_des);
+            State startState = Util.readMachine(sc_des);
 
             String input = sc.nextLine(); //read a line
 
