@@ -76,7 +76,6 @@ public class Main {
             //TODO ----------------------------------------------------------
 
         } catch (Exception e) {
-            e.printStackTrace();
             System.out.println("input error");
 
             System.exit(2);
