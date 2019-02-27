@@ -254,14 +254,6 @@ void print_message() {
 
 
 int main(int argc, char *argv[]) {
-
-    int limit, i, flag;
-    char current_state[MAX_LENGTH][LIMIT], new_state[MAX_LENGTH][LIMIT];
-    char input_symbol[MAX_LENGTH], write_symbol[MAX_LENGTH], move[MAX_LENGTH];
-    char state[LIMIT], file_name[FILENAME_LENGTH];
-
-    FILE *fin;
-
     if (argc > 1 && !strcmp(argv[1], "-help")) {
         printf("Usage\n");
         printf("1. ./runTM\n");
@@ -271,8 +263,10 @@ int main(int argc, char *argv[]) {
 
     /* Reading data from user input */
 
+    printf("here!!");
     DState *d = NULL;
     NState *n = NULL;
+    printf("here~~~");
 
     /* Checks if file input as commandline argument is present */
     if (argc > 2) {
@@ -305,7 +299,5 @@ int main(int argc, char *argv[]) {
         */
     }
 
-    printf("\n");
-    printf("Output is stored as \'%s\' in the folder\n", file_name);
     return 0;
 }
