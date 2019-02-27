@@ -331,6 +331,7 @@ void readDescription(char *filePath, char isDeterministic, DState *d, NState *n)
                 } else {
 
                     //
+                    break;
 
                 }
             }
