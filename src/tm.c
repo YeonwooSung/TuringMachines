@@ -101,7 +101,7 @@ char **splitStr(char *str, const char del, size_t *counter) {
 /**
  * The aim of this function is to read the description file.
  */
-void readDescription(char *filePath, char isDeterministic, DState **d, NState **n) {
+void readDescription(char *filePath, char isDeterministic, DState *d, NState *n) {
     FILE *f = fopen(filePath, "r");
 
     if (f == NULL) {
@@ -113,16 +113,15 @@ void readDescription(char *filePath, char isDeterministic, DState **d, NState **
     size_t len = 0;
 
     size_t num_of_states = 0;
-    printf("Start");
 
     //read line to get the number of states
     if (getline(&line, &len, f) != -1) {
         size_t counter = 0; //to count the number of splited strings
         char **splited = splitStr(line, ' ', &counter);
 
-        printf("hello");
-        free(splited); //TODO
-        printf("hi");
+        //printf("hello");
+        //free(splited); //TODO
+        //printf("hi");
 
         if (strcmp(splited[0], "states") == 0) {
             printf("number of states: %s", splited[1]); //TODO
@@ -183,9 +182,8 @@ void readDescription(char *filePath, char isDeterministic, DState **d, NState **
 
                 } else {
                     printf("test1-1");
-                    *d = (DState *) malloc(sizeof(DState));
 
-                    d_tmp = *d;
+                    d_tmp = d;
 
                     printf("test1-2");
 
@@ -264,7 +262,7 @@ int main(int argc, char *argv[]) {
     /* Reading data from user input */
 
     printf("here!!");
-    DState *d = NULL;
+    DState *d = (DState *)malloc(sizeof(DState));
     NState *n = NULL;
     printf("here~~~");
 
@@ -276,7 +274,7 @@ int main(int argc, char *argv[]) {
 
             printf("here");
 
-            readDescription(argv[1], 1, &d, &n);
+            readDescription(argv[1], 1, d, n);
 
             //TODO read description file and get states
 
