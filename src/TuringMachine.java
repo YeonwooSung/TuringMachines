@@ -64,6 +64,18 @@ public class TuringMachine {
     }
 
 
+    /**
+     * This method gets the final state of the deterministic turing machine.
+     *
+     * @return the string of the final state
+     */
+    String getFinalState_DTM() {
+        TuringMachineState state = this.quantumStates.get(0);
+
+        return state.getStateName();
+    }
+
+
     private TuringMachineState getAcceptingMachine() {
         for (TuringMachineState state : quantumStates) {
             if (state.isAccepted())

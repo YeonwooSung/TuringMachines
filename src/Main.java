@@ -53,29 +53,26 @@ public class Main {
 
             TuringMachineState tms = tm.run();
 
+            sc.close();
+            sc_des.close();
+
+
             if (tms != null) {
                 System.out.println("accepted");
             } else {
-                System.out.println("The machine did not accept the input.");
+                System.out.println("not accepted");
             }
 
-            System.out.println("Number of transitions necessary: " + tm.getTransitionCount());
+            System.out.println(tm.getTransitionCount());
+
+            System.out.println(tm.getFinalState_DTM());
 
         } catch (Exception e) {
             System.out.println("input error");
 
             System.exit(2);
-        } finally {
-
-            try {
-            sc.close();
-            sc_des.close();
-            } catch (Exception e) {
-                e.getMessage();
-            }
-
         }
-    }
 
+    }
 
 }

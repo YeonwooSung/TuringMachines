@@ -96,6 +96,11 @@ public class TuringMachineState {
     }
 
 
+    String getStateName() {
+        return this.currentState.getStateName();
+    }
+
+
     void printState() {
         System.out.println(currentState.getStateName());
 
