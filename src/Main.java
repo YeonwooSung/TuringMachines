@@ -24,6 +24,10 @@ public class Main {
         try {
             String descriptionPath, inputPath;
 
+            for (int i = 0; i < args.length; i++) {
+                System.out.println(args[i]);
+            }
+
             Scanner sc;
             Scanner sc_des;
 
