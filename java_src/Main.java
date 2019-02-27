@@ -32,7 +32,7 @@ public class Main {
                 sc_des = new Scanner(System.in);
 
             } else if (args.length < 2) {
-                
+
                 sc = new Scanner(System.in);
                 sc_des = new Scanner(new FileInputStream(args[0]));
 
@@ -44,8 +44,10 @@ public class Main {
                 sc_des = new Scanner(new FileInputStream(args[1]));
             }
 
+            List<Character> alphabets;
+
             // read states and get the start state
-            State startState = Util.readMachine(sc_des);
+            State startState = Util.readMachine(sc_des, alphabets);
 
             String input = sc.nextLine(); //read a line
 

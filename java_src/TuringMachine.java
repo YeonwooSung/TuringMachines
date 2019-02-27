@@ -7,15 +7,19 @@ import java.util.stream.Collectors;
 public class TuringMachine {
 
     private int transitionCount = 0;
-    private int totalNumOfSymb;
     private List<TuringMachineState> quantumStates;
+    private List<Character> alphabets;
 
 
-    public TuringMachine(State startState, String tapeInput) {
+    public TuringMachine(State startState, String tapeInput, List<Character> alphabets) {
         this.quantumStates = new LinkedList<>();
         quantumStates.add(new TuringMachineState(startState, tapeInput));
 
-        totalNumOfSymb = tapeInput.length();
+        for (int i = 0; i < tapeInput.length(); i++) {
+            //TODO read all tape input characters and check if there is invalid symbol
+        }
+
+        this.alphabets = alphabets;
     }
 
 

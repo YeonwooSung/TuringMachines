@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 
 public class Util {
-    public static State readMachine(Scanner sc) throws IOException, NoSuchElementException {
+    public static State readMachine(Scanner sc, List<Character> alphabets) throws IOException, NoSuchElementException {
         sc.next("states");
 
         int noStates = sc.nextInt();
@@ -41,6 +41,7 @@ public class Util {
 
         // A linked list to store alphabets
         List<String> alphabet = new LinkedList<>();
+        alphabets = new LinkedList<>();
 
         // use for loop to read all alphabets from the description file
         for (int i = 0; i < alphabetSize; ++i) {
@@ -50,7 +51,11 @@ public class Util {
             assert letter.length() == 1;
 
             alphabet.add(letter);
+            alphabets.add(letter.charAt(0));
         }
+
+
+        // generate the regular expression strings, which will be used to check the input
 
         String stateRegex = states.values().stream().map(State::getStateName).map(Pattern::quote).collect(Collectors.joining("|"));
 

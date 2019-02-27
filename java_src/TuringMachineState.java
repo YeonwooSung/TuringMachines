@@ -32,6 +32,7 @@ public class TuringMachineState {
         this.currentState = state.currentState;
         this.position = state.position;
         this.transitionCount = state.transitionCount;
+
         for (Map.Entry<Integer, Character> entry : state.tape.entrySet()) {
             tape.put(entry.getKey(), entry.getValue());
         }
@@ -61,6 +62,7 @@ public class TuringMachineState {
         return tape.getOrDefault(position, '_');
     }
 
+
     private void apply(Transition trans) {
         writeAtHead(trans.getNewSymbol());
         moveHead(trans.getMove());
@@ -75,16 +77,21 @@ public class TuringMachineState {
 
         List<Transition> possibleTransitions = currentState.getTransitionsFor(symbolAtHead);
 
+        // check the number of possible transitions
         if (possibleTransitions.size() == 1) {
+
             // No need to create a new machine, just keep using the current one.
             this.apply(possibleTransitions.get(0));
             reachedStates.add(this);
+
         } else {
+
             for (Transition trans : possibleTransitions) {
                 TuringMachineState fork = new TuringMachineState(this);
                 fork.apply(trans);
                 reachedStates.add(fork);
             }
+
         }
 
         return reachedStates;
