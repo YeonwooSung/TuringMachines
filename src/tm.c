@@ -227,6 +227,10 @@ void readDescription(char *filePath, char isDeterministic, DState *d, NState *n)
                     } else {
                         n_tmp->accept = 0;
                         n_tmp->name = strdup(line);
+
+                        n_tmp->name[(strlen(n_tmp->name) - 1)] = '\0';
+
+                        printf("%s, %d\n", n_tmp->name, strlen(n_tmp->name)); //TODO
                     }
 
                     n_tmp->next = NULL; //set the next node as NULL
@@ -265,7 +269,9 @@ void readDescription(char *filePath, char isDeterministic, DState *d, NState *n)
             }
 
         }
-    }
+
+    } //for loop ends
+
 
     Alphabets *list = (Alphabets *) malloc(sizeof(Alphabets));
 
@@ -282,21 +288,18 @@ void readDescription(char *filePath, char isDeterministic, DState *d, NState *n)
 
         Alphabets *tmp = list;
 
-        //TODO alphabets
-        printf("Number of tokens: %lu\n", counter);
+        // use the loop to store all symbol alphabets in the linked list
         for (int i = 3; i < counter; i++) {
             tmp->next = (Alphabets *)malloc(sizeof(Alphabets));
             tmp = tmp->next;
             tmp->alphabet = *splited[i];
-
-            printf("%c ", *splited[i]);
         }
         tmp->next = NULL;
     }
 
     //use getline() to read a line from the description file
     while (getline(&line, &len, f) != -1) {
-        printf("\n%s!\n", line); //TODO debugging
+        printf("%s", line); //TODO debugging
 
         //
     }
