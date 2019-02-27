@@ -7,21 +7,17 @@ import java.util.stream.Collectors;
 public class TuringMachine {
 
     private int transitionCount = 0;
+    private int totalNumOfSymb;
     private List<TuringMachineState> quantumStates;
-    private boolean printTransitions;
 
 
     public TuringMachine(State startState, String tapeInput) {
-        this(startState, tapeInput, false);
-    }
-
-
-    public TuringMachine(State startState, String tapeInput, boolean printTransitions) {
-        this.printTransitions = printTransitions;
-
         this.quantumStates = new LinkedList<>();
         quantumStates.add(new TuringMachineState(startState, tapeInput));
+
+        totalNumOfSymb = tapeInput.length();
     }
+
 
     private List<TuringMachineState> step() {
         return quantumStates.stream().map(TuringMachineState::step).flatMap(Collection::stream).collect(Collectors.toList());
@@ -47,35 +43,37 @@ public class TuringMachine {
 
 
     /**
-     * 
+     * This method runs the turing machine.
+     *
+     * @throws Exception The exception might be thrown if the
      */
-    public TuringMachineState run() throws Exception { //TODO add exception
+    public TuringMachineState run() throws Exception {
         this.transitionCount = 0;
 
         while (!hasAcceptingState()) {
             this.quantumStates = step();
-            this.transitionCount += 1;
+
+            // TODO need to test
+            if (transitionCount == this.totalNumOfSymb) {
+                break;
+            }
 
             if (this.quantumStates.isEmpty()) {
                 //return null;
                 throw new Exception();
             }
+
+            this.transitionCount += 1;
         }
+
         return getAcceptingMachine();
     }
 
-
-    /**
-     * This method gets the final state of the deterministic turing machine.
-     *
-     * @return the string of the final state
-     */
-    String getFinalState_DTM() {
-        TuringMachineState state = this.quantumStates.get(0);
-
-        return state.getStateName();
+    public void printResultSymbols() {
+        for (int i = 0; i < quantumStates.size(); i++) {
+            quantumStates.get(i).printUntilPosition();
+        }
     }
-
 
     private TuringMachineState getAcceptingMachine() {
         for (TuringMachineState state : quantumStates) {

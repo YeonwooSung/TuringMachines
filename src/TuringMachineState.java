@@ -18,7 +18,7 @@ public class TuringMachineState {
         this.position = 0;
         this.transitionCount = 0;
 
-        for (int i = 0; i < tape.length(); ++i) {
+        for (int i = 0; i < tape.length(); i++) {
             this.tape.put(i, tape.charAt(i));
         }
     }
@@ -38,13 +38,6 @@ public class TuringMachineState {
     }
 
 
-    public List<Character> getListOfSymbols() {
-        List<Character> list = new ArrayList<Character>(tape.values());
-
-        return list;
-    }
-
-
     /**
      * Write a symbol to the tape
      * 
@@ -54,7 +47,17 @@ public class TuringMachineState {
         tape.put(position, rewriteSymbol);
     }
 
+
+    void printUntilPosition() {
+        for (int i = 0; i <= position; i++) {
+            System.out.print(tape.get(i));
+        }
+        System.out.println();
+    }
+
+
     private Character readAtHead() {
+        //TODO
         return tape.getOrDefault(position, '_');
     }
 

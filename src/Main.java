@@ -44,18 +44,21 @@ public class Main {
                 sc_des = new Scanner(new FileInputStream(args[1]));
             }
 
-            // Read
+            // read states and get the start state
             State startState = Util.readMachine(sc_des);
 
             String input = sc.nextLine(); //read a line
 
-            TuringMachine tm = new TuringMachine(startState, input, true);
+            // set up the turing machine
+            TuringMachine tm = new TuringMachine(startState, input);
 
+            //TODO ----------------------------------------------------------
+            // run the turing machine
             TuringMachineState tms = tm.run();
 
+            // close the scanners
             sc.close();
             sc_des.close();
-
 
             if (tms != null) {
                 System.out.println("accepted");
@@ -63,18 +66,17 @@ public class Main {
                 System.out.println("not accepted");
             }
 
-            System.out.println(tm.getTransitionCount() - 1);
+            //TODO
 
-            //System.out.println(tm.getFinalState_DTM());
-            List<Character> list = tms.getListOfSymbols();
+            System.out.println(tm.getTransitionCount());
 
-            for (int i = 0; i < list.size() - 1; i++) {
-                System.out.print(list.get(i));
-            }
+            tm.printResultSymbols();
 
-            System.out.println();
+            //TODO output..
+            //TODO ----------------------------------------------------------
 
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("input error");
 
             System.exit(2);
