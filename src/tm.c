@@ -153,6 +153,7 @@ void readDescription(char *filePath, char isDeterministic, DState *d, NState *n)
                         d_tmp->name = strdup(splited[0]);
 
                         free(splited); //TODO
+
                     } else if (strchr(line, '-')) {
                         size_t counter = 0; //to count the number of splited strings
                         char **splited = splitStr(line, ' ', &counter);
@@ -161,9 +162,13 @@ void readDescription(char *filePath, char isDeterministic, DState *d, NState *n)
                         d_tmp->name = strdup(splited[0]);
 
                         free(splited); //TODO
+
                     } else {
                         d_tmp->accept = 0;
                         d_tmp->name = strdup(line);
+
+                        //remove the newline character from the state name
+                        d_tmp->name[(strlen(d_tmp->name) - 1)] = '\0';
                     }
 
                     d_tmp->next = NULL; //set the next node as NULL
@@ -191,13 +196,10 @@ void readDescription(char *filePath, char isDeterministic, DState *d, NState *n)
                     } else {
                         d_tmp->accept = 0;
                         d_tmp->name = strdup(line);
+
+                        // remove the newline character from the state name
+                        d_tmp->name[(strlen(d_tmp->name) - 1)] = '\0';
                     }
-
-                    printf("%s, %lu\n", d_tmp->name, strlen(d_tmp->name)); //TODO
-
-                    d_tmp->name[(strlen(d_tmp->name) - 1)] = '\0';
-
-                    printf("%s, %lu\n", d_tmp->name, strlen(d_tmp->name)); //TODO
 
                     d_tmp->next = NULL; //set the next node as NULL
 
@@ -234,11 +236,8 @@ void readDescription(char *filePath, char isDeterministic, DState *d, NState *n)
                         n_tmp->accept = 0;
                         n_tmp->name = strdup(line);
 
-                        printf("%s, %lu\n", n_tmp->name, strlen(n_tmp->name)); //TODO
-
+                        //remove the newline character from the state name
                         n_tmp->name[(strlen(n_tmp->name) - 1)] = '\0';
-
-                        printf("%s, %lu\n", n_tmp->name, strlen(n_tmp->name)); //TODO
                     }
 
                     n_tmp->next = NULL; //set the next node as NULL
@@ -268,6 +267,9 @@ void readDescription(char *filePath, char isDeterministic, DState *d, NState *n)
                     } else {
                         n_tmp->accept = 0;
                         n_tmp->name = strdup(line);
+
+                        //remove the newline character from the state name
+                        n_tmp->name[(strlen(n_tmp->name) - 1)] = '\0';
                     }
 
                     n_tmp->next = NULL; //set the next node as NULL
@@ -309,30 +311,61 @@ void readDescription(char *filePath, char isDeterministic, DState *d, NState *n)
     while (getline(&line, &len, f) != -1) {
         printf("%s", line); //TODO debugging
 
-        //
+        char *str = (char *)malloc(len + 1);
+
+        strcpy(str, line);
+
+        size_t counter = 0; //to count the number of splited strings
+        char **splited = splitStr(str, ' ', &counter);
+
+        //TODO store the transitions
+        if (isDeterministic) {
+
+            d_tmp = d;
+
+            // iterate the linked list of states
+            while (d_tmp) {
+                printf("!%s!\n", d_tmp->name);
+                if (strcmp(d_tmp->name, splited[0]) != 0) {
+                    d_tmp = d_tmp->next;
+                } else {
+
+                    //
+
+                }
+            }
+
+        } else {
+            //nondeterministic
+            n_tmp = n;
+
+            // iterate the linked list of states
+            while (n_tmp) {
+                if (strcmp(n_tmp->name, splited[0]) != 0) {
+                    n_tmp = n_tmp->next;
+                } else {
+
+                    //TODO Add new transition to TList
+
+                }
+            }
+
+        }
     }
 }
 
 
-void print_message() {
-    printf("Enter the Turing Machine input code\n");
-    printf("Input format:\n");
-    printf("\t<current state> <tapeinput> <new state> <tapeoutput> <move>\n");
-    printf("A single transition should occupy a single line\n");
-    printf("input symbol, new symbol and movement are single characters.\n");
-    printf("current state and new state can be any combination of characters within a limit of 5\n");
-    printf("First current state will be considered as your initial state\n");
-    printf("Use \'_\' for blank\n");
-    printf("Use \'$\' as current state to stop.\n\n");
+/* Prints out the usage of this program */
+void printUsage() {
+    printf("Usage\n");
+    printf("1. ./runTM <description file> <input tape file>\n");
+    exit(0);
 }
 
 
 int main(int argc, char *argv[]) {
     if (argc > 1 && !strcmp(argv[1], "-help")) {
-        printf("Usage\n");
-        printf("1. ./runTM\n");
-        printf("2. ./runTM <input file>\n");
-        exit(0);
+        printUsage();
     }
 
     /* Reading data from user input */
@@ -358,19 +391,7 @@ int main(int argc, char *argv[]) {
         }
 
     } else {
-        //TODO
-        /*
-        print_message();
-        fin = stdin; //use the stdin to get the user input
-        for (limit = 0; limit < MAX_LENGTH; limit++) {
-            scanf("%s %s", current_state[limit], current_state[limit]);
-            if (!strcmp(current_state[limit], "$")) {
-                break;
-            }
-            scanf(" %c %c %c %s", &input_symbol[limit], &write_symbol[limit], &move[limit], new_state[limit]);
-        }
-        printf("\n");
-        */
+        printUsage();
     }
 
     return 0;
