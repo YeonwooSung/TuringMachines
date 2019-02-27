@@ -73,6 +73,8 @@ public class Util {
             if (sc.hasNext(stateRegex)) {
                 currentStateStr = sc.next(stateRegex);
             } else {
+                sc.close(); // close the scanner
+
                 throw new IOException("Unknown state: " + sc.next());
             }
 
@@ -86,6 +88,8 @@ public class Util {
             if (sc.hasNext(stateRegex)) {
                 nextStateStr = sc.next(stateRegex);
             } else {
+                sc.close(); // close the scanner
+
                 throw new IOException("Unknown state: " + sc.next());
             }
 
