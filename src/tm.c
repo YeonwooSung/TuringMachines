@@ -260,12 +260,8 @@ int main(int argc, char *argv[]) {
         if (argc  != 3) {
             //TODO nondeterministic TM
         } else {
-            fin = fopen(argv[1], "r");
 
-            if (fin == NULL) {
-                printf("Error (File not found): \'%s\'\n", argv[1]);
-                exit(0);
-            }
+            readDescription(argv[1], 1, &d, &n);
 
             //TODO read description file and get states
 
