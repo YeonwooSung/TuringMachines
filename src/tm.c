@@ -280,6 +280,8 @@ int main(int argc, char *argv[]) {
             //TODO nondeterministic TM
         } else {
 
+            printf("here");
+
             readDescription(argv[1], 1, &d, &n);
 
             //TODO read description file and get states
