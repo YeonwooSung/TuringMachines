@@ -65,7 +65,7 @@ public class Main {
 
             sc.close();
             sc_des.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("input error");
 
             System.exit(2);
