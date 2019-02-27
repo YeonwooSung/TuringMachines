@@ -26,7 +26,7 @@ public class Main {
         Scanner sc;
 
         // Check if the user passed the suitable number of command line arguments (2).
-        if (args.length != 2) {
+        if (args.length == 2) {
 
             // The first command line argument should be the file path to the description
             // file.
