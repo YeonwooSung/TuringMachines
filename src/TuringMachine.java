@@ -24,17 +24,6 @@ public class TuringMachine {
     }
 
     private List<TuringMachineState> step() {
-        System.out.println("Current machines: ");
-        if (this.printTransitions) {
-            int idx = 1;
-            for (TuringMachineState state : quantumStates) {
-                System.out.println("Machine " + idx);
-                state.printState();
-                idx++;
-            }
-            System.out.println();
-        }
-
         return quantumStates.stream().map(TuringMachineState::step).flatMap(Collection::stream).collect(Collectors.toList());
     }
 
