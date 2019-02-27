@@ -2,7 +2,7 @@ JAVAC=javac
 sources = $(wildcard *.java)
 classes = $(sources:.java=.class)
 
-all: myProgram jar
+all: myProgram jar copy_file
 
 myProgram: $(classes)
 
@@ -17,7 +17,13 @@ jar:
 
 	jar -cmf manifest.txt runTM.jar $(classes)
 
+copy_file:
+	chmod +x exe_tm.sh
+	cp exe_tm.sh runtm
+	chmod +x runtm
+
 clean:
 	rm -rf *.class
 	rm manifest.txt
 	rm runTM.jar
+	rm runtm
