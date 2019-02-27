@@ -116,8 +116,12 @@ void readDescription(char *filePath, char isDeterministic, DState *d, NState *n)
 
     //read line to get the number of states
     if (getline(&line, &len, f) != -1) {
+        char *str = (char *) malloc(len + 1);
+
+        strcpy(str, line);
+
         size_t counter = 0; //to count the number of splited strings
-        char **splited = splitStr(line, ' ', &counter);
+        char **splited = splitStr(str, ' ', &counter);
 
         //printf("hello");
         //free(splited); //TODO
