@@ -1,4 +1,3 @@
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -6,16 +5,7 @@ import java.util.stream.Collectors;
 
 
 public class Util {
-    public static State readMachine(String path) throws IOException {
-
-        // scanner to read the description file
-        Scanner sc;
-        if (path != null && !path.isEmpty()) {
-            sc = new Scanner(new FileInputStream(path));
-        } else {
-            sc = new Scanner(System.in);
-        }
-
+    public static State readMachine(String path, Scanner sc) throws IOException {
         sc.next("states");
 
         int noStates = sc.nextInt();
@@ -109,8 +99,6 @@ public class Util {
 
             currentState.addTransition(inputTape.charAt(0), new Transition(nextState, outputTape.charAt(0), move));
         }
-
-        sc.close(); //close the scanner
 
         return startState;
     }

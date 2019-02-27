@@ -24,6 +24,7 @@ public class Main {
         String descriptionPath, inputPath;
 
         Scanner sc;
+        Scanner sc_des;
 
         // Check if the user passed the suitable number of command line arguments (2).
         if (args.length == 2) {
@@ -34,16 +35,18 @@ public class Main {
             inputPath = args[1];
 
             sc = new Scanner(new FileInputStream(inputPath));
+            sc_des = new Scanner(new FileInputStream(descriptionPath));
 
         } else {
 
             sc = new Scanner(System.in);
+            sc_des = new Scanner(System.in);
 
             descriptionPath = null;
         }
 
         // Read
-        State startState = Util.readMachine(descriptionPath);
+        State startState = Util.readMachine(descriptionPath, sc_des);
 
         String input = sc.nextLine(); //read a line
 
@@ -60,6 +63,7 @@ public class Main {
         System.out.println("Number of transitions necessary: " + tm.getTransitionCount());
 
         sc.close();
+        sc_des.close();
     }
 
 }
