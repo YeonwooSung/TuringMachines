@@ -10,13 +10,6 @@
 #define LIMIT 5
 #define FILENAME_LENGTH 20
 
-void print_head();
-void print_message();
-void print_line();
-void update_string(char, char);
-
-
-//TODO
 
 
 /**
@@ -99,9 +92,34 @@ char **splitStr(char *str, const char del, size_t *counter) {
 
 
 /**
- * The aim of this function is to read the description file.
+ * This function finds the particular state node from the linked list of states.
+ *
+ * @param {s} Linked list of states
+ * @param {name} The name of the particular state
+ * @return The pointer that points to the particular state node.
+ *         If the node that we are looking for is not in the linked list, NULL will be returned.
  */
-void readDescription(char *filePath, char isDeterministic, DState *d, NState *n) {
+State *findState(State *s, char *name) {
+    while (s) {
+        if (strcmp(s->name, name) != 0) {
+            s = s->next;
+        } else {
+            return s;
+        }
+    }
+
+    return NULL;
+}
+
+
+/**
+ * The aim of this function is to read the description file.
+ *
+ * @param {filePath} file path of the description file
+ * @param {isDeterministic} 1 is the turing machine is deterministic. Otherwise, 0.
+ * @param {s} The linked list of states
+ */
+void readDescription(char *filePath, char isDeterministic, State *s) {
     FILE *f = fopen(filePath, "r");
 
     if (f == NULL) {
@@ -128,153 +146,76 @@ void readDescription(char *filePath, char isDeterministic, DState *d, NState *n)
         }
     }
 
-    DState *d_tmp = NULL;
-    NState *n_tmp = NULL;
+    State *s_tmp = NULL;
 
     //reads the file to get the name of states
     for (size_t i = 0; i < num_of_states; i++) {
         if (getline(&line, &len, f) != -1) {
 
-            // check if this turing machine is deterministic
-            if (isDeterministic) {
+            // check if this is the initial state.
+            if (s_tmp) {
 
-                // check if this is the initial state.
-                if (d_tmp) {
+                s_tmp->next = (State *) malloc(sizeof(State));
+                s_tmp = s_tmp->next;
 
-                    d_tmp->next = (DState *) malloc(sizeof(DState));
-                    d_tmp = d_tmp->next;
+                // use if-else statement to check if the new state is the accepted state or rejected state.
+                if (strchr(line, '+')) {
+                    size_t counter = 0; //to count the number of splited strings
+                    char **splited = splitStr(line, ' ', &counter);
 
-                    // use if-else statement to check if the new state is the accepted state or rejected state.
-                    if (strchr(line, '+')) {
-                        size_t counter = 0; //to count the number of splited strings
-                        char **splited = splitStr(line, ' ', &counter);
+                    s_tmp->accept = 'a';
+                    s_tmp->name = strdup(splited[0]);
 
-                        d_tmp->accept = 'a';
-                        d_tmp->name = strdup(splited[0]);
+                    free(splited); //TODO
 
-                        free(splited); //TODO
+                } else if (strchr(line, '-')) {
+                    size_t counter = 0; //to count the number of splited strings
+                    char **splited = splitStr(line, ' ', &counter);
 
-                    } else if (strchr(line, '-')) {
-                        size_t counter = 0; //to count the number of splited strings
-                        char **splited = splitStr(line, ' ', &counter);
+                    s_tmp->accept = 'r';
+                    s_tmp->name = strdup(splited[0]);
 
-                        d_tmp->accept = 'r';
-                        d_tmp->name = strdup(splited[0]);
-
-                        free(splited); //TODO
-
-                    } else {
-                        d_tmp->accept = 0;
-                        d_tmp->name = strdup(line);
-
-                        //remove the newline character from the state name
-                        d_tmp->name[(strlen(d_tmp->name) - 1)] = '\0';
-                    }
-
-                    d_tmp->next = NULL; //set the next node as NULL
+                    free(splited); //TODO
 
                 } else {
-                    d_tmp = d;
+                    s_tmp->accept = 0;
+                    s_tmp->name = strdup(line);
 
-                    // use if-else statement to check if the new state is the accepted state or rejected state.
-                    if (strchr(line, '+')) {
-                        size_t counter = 0; //to count the number of splited strings
-                        char **splited = splitStr(line, ' ', &counter);
-
-                        d_tmp->accept = 'a';
-                        d_tmp->name = strdup(splited[0]);
-
-                        free(splited); //TODO
-                    } else if (strchr(line, '-')) {
-                        size_t counter = 0; //to count the number of splited strings
-                        char **splited = splitStr(line, ' ', &counter);
-
-                        d_tmp->accept = 'r';
-                        d_tmp->name = strdup(splited[0]);
-
-                        free(splited); //TODO
-                    } else {
-                        d_tmp->accept = 0;
-                        d_tmp->name = strdup(line);
-
-                        // remove the newline character from the state name
-                        d_tmp->name[(strlen(d_tmp->name) - 1)] = '\0';
-                    }
-
-                    d_tmp->next = NULL; //set the next node as NULL
-
+                    //remove the newline character from the state name
+                    s_tmp->name[(strlen(s_tmp->name) - 1)] = '\0';
                 }
 
-            } else { //TODO need to test nondeterministic TM
+                s_tmp->next = NULL; //set the next node as NULL
 
-                // check if this is the initial state.
-                if (n_tmp) {
+            } else {
+                s_tmp = s;
 
-                    n_tmp->next = (NState *) malloc(sizeof(NState));
-                    n_tmp = n_tmp->next;
+                // use if-else statement to check if the new state is the accepted state or rejected state.
+                if (strchr(line, '+')) {
+                    size_t counter = 0; //to count the number of splited strings
+                    char **splited = splitStr(line, ' ', &counter);
 
-                    // use if-else statement to check if the new state is the accepted state or rejected state.
-                    if (strchr(line, '+')) {
-                        size_t counter = 0; //to count the number of splited strings
-                        char **splited = splitStr(line, ' ', &counter);
+                    s_tmp->accept = 'a';
+                    s_tmp->name = strdup(splited[0]);
 
-                        n_tmp->accept = 'a';
-                        n_tmp->name = strdup(splited[0]);
+                    free(splited); //TODO
+                } else if (strchr(line, '-')) {
+                    size_t counter = 0; //to count the number of splited strings
+                    char **splited = splitStr(line, ' ', &counter);
 
-                        free(splited); //TODO
+                    s_tmp->accept = 'r';
+                    s_tmp->name = strdup(splited[0]);
 
-                    } else if (strchr(line, '-')) {
-                        size_t counter = 0; //to count the number of splited strings
-                        char **splited = splitStr(line, ' ', &counter);
-
-                        n_tmp->accept = 'r';
-                        n_tmp->name = strdup(splited[0]);
-
-                        free(splited); //TODO
-
-                    } else {
-                        n_tmp->accept = 0;
-                        n_tmp->name = strdup(line);
-
-                        //remove the newline character from the state name
-                        n_tmp->name[(strlen(n_tmp->name) - 1)] = '\0';
-                    }
-
-                    n_tmp->next = NULL; //set the next node as NULL
-
+                    free(splited); //TODO
                 } else {
-                    n_tmp = n;
+                    s_tmp->accept = 0;
+                    s_tmp->name = strdup(line);
 
-                    // use if-else statement to check if the new state is the accepted state or rejected state.
-                    if (strchr(line, '+')) {
-                        size_t counter = 0; //to count the number of splited strings
-                        char **splited = splitStr(line, ' ', &counter);
-
-                        n_tmp->accept = 'a';
-                        n_tmp->name = strdup(splited[0]);
-
-                        free(splited); //TODO
-
-                    } else if (strchr(line, '-')) {
-                        size_t counter = 0; //to count the number of splited strings
-                        char **splited = splitStr(line, ' ', &counter);
-
-                        n_tmp->accept = 'r';
-                        n_tmp->name = strdup(splited[0]);
-
-                        free(splited); //TODO
-
-                    } else {
-                        n_tmp->accept = 0;
-                        n_tmp->name = strdup(line);
-
-                        //remove the newline character from the state name
-                        n_tmp->name[(strlen(n_tmp->name) - 1)] = '\0';
-                    }
-
-                    n_tmp->next = NULL; //set the next node as NULL
-
+                    // remove the newline character from the state name
+                    s_tmp->name[(strlen(s_tmp->name) - 1)] = '\0';
                 }
+
+                s_tmp->next = NULL; //set the next node as NULL
 
             }
 
@@ -318,40 +259,76 @@ void readDescription(char *filePath, char isDeterministic, DState *d, NState *n)
         size_t counter = 0; //to count the number of splited strings
         char **splited = splitStr(str, ' ', &counter);
 
-        //TODO store the transitions
-        if (isDeterministic) {
+        s_tmp = s;
 
-            d_tmp = d;
+        // iterate the linked list of states
+        while (s_tmp) {
+            // use conditional statement to find the corresponding state node
+            if (strcmp(s_tmp->name, splited[0]) != 0) {
+                s_tmp = s_tmp->next;
+            } else {
 
-            // iterate the linked list of states
-            while (d_tmp) {
-                printf("!%s!\n", d_tmp->name);
-                if (strcmp(d_tmp->name, splited[0]) != 0) {
-                    d_tmp = d_tmp->next;
+                TList *t = (TList *) malloc(sizeof(TList));
+
+                t->inputSymbol = *splited[1];
+                t->outputSymbol = *splited[3];
+                t->move = *splited[4];
+                t->next = NULL;
+
+                State *target = findState(s, splited[0]);
+
+                if (target) {
+                    t->newState = target;
+                    printf("target name: %s\n", target->name); //TODO need to test
                 } else {
-
-                    //
-                    break;
-
+                    //TODO what if the state is not in the linked list??
                 }
-            }
 
-        } else {
-            //nondeterministic
-            n_tmp = n;
+                //check wheter s_tmp->list is null or not
+                if (s_tmp->list) {
+                    //TODO if the t list is not null
+                    if (isDeterministic) {
+                        TList *tempList = s_tmp->list;
 
-            // iterate the linked list of states
-            while (n_tmp) {
-                if (strcmp(n_tmp->name, splited[0]) != 0) {
-                    n_tmp = n_tmp->next;
+                        while (tempList->next) {
+                            if (tempList->inputSymbol != t->inputSymbol) {
+                                tempList = tempList->next;
+                            } else {
+                                //ERROR!
+                                printf("Transition error: cannot have transitions that take same symbol and state\n");
+                                exit(0);
+                            }
+                        }
+
+                        if (tempList->inputSymbol != t->inputSymbol) {
+                            tempList->next = t;
+                        } else {
+                            //ERROR!
+                            printf("Transition error: cannot have transitions that take same symbol and state\n");
+                            exit(0);
+                        }
+
+                    } else {
+
+                        TList *tempList = s_tmp->list;
+
+                        while (tempList->next) {
+                            tempList = tempList->next;
+                        }
+
+                        tempList->next = t;
+
+                    }
+
                 } else {
-
-                    //TODO Add new transition to TList
-
+                    s_tmp->list = t;
                 }
-            }
 
+                break; //stop iterating the linked list of states.
+
+            }
         }
+
     }
 }
 
@@ -374,19 +351,17 @@ int main(int argc, char *argv[]) {
     /* Checks if file input as commandline argument is present */
     if (argc > 2) {
 
+        State *s = (State *)malloc(sizeof(State));
+
         //check if the number of command line arguments is 3
         if (argc  != 3) {
-            DState *d = NULL;
-            NState *n = (NState *)malloc(sizeof(NState));
 
-            readDescription(argv[1], 0, d, n);
+            readDescription(argv[1], 0, s);
 
             //TODO nondeterministic TM
         } else {
-            DState *d = (DState *)malloc(sizeof(DState));
-            NState *n = NULL;
 
-            readDescription(argv[1], 1, d, n);
+            readDescription(argv[1], 1, s);
 
             //TODO read input file
         }
