@@ -119,7 +119,9 @@ void readDescription(char *filePath, char isDeterministic, DState **d, NState **
         size_t counter = 0; //to count the number of splited strings
         char **splited = splitStr(line, ' ', &counter);
 
+        printf("hello");
         free(splited); //TODO
+        printf("hi");
 
         if (strcmp(splited[0], "states") == 0) {
             printf("number of states: %s", splited[1]); //TODO
