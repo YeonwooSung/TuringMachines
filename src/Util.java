@@ -9,7 +9,12 @@ public class Util {
     public static State readMachine(String path) throws IOException {
 
         // scanner to read the description file
-        Scanner sc = new Scanner(new FileInputStream(path));
+        Scanner sc;
+        if (path != null && !path.isEmpty()) {
+            sc = new Scanner(new FileInputStream(path));
+        } else {
+            sc = new Scanner(System.in);
+        }
 
         sc.next("states");
 

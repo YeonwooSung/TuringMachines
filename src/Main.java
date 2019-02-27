@@ -21,22 +21,30 @@ public class Main {
      * The main method of the RunTM class, which is the starting point of the Turing Machine.
      */
     public static void main(String[] args) throws IOException {
+        String descriptionPath, inputPath;
+
+        Scanner sc;
+
         // Check if the user passed the suitable number of command line arguments (2).
         if (args.length != 2) {
-            printUsage();
-            return;
-        }
 
-        // The first command line argument should be the file path to the description file.
-        String descriptionPath = args[0];
-        // The second command line argument should be the file path to the input file.
-        String inputPath = args[1];
+            // The first command line argument should be the file path to the description
+            // file.
+            descriptionPath = args[0];
+            // The second command line argument should be the file path to the input file.
+            inputPath = args[1];
+
+            sc = new Scanner(new FileInputStream(inputPath));
+
+        } else {
+
+            sc = new Scanner(System.in);
+
+            descriptionPath = null;
+        }
 
         // Read
         State startState = Util.readMachine(descriptionPath);
-
-        // scanner to read the file via FileInputStream
-        Scanner sc = new Scanner(new FileInputStream(inputPath));
 
         String input = sc.nextLine(); //read a line
 
