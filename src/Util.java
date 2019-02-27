@@ -68,6 +68,7 @@ public class Util {
             if (sc.hasNext(stateRegex)) {
                 currentStateStr = sc.next(stateRegex);
             } else {
+                //TODO for testing
                 System.out.println("Unknown state: " + sc.next());
 
                 throw new IOException("Unknown state: " + sc.next());
@@ -83,6 +84,7 @@ public class Util {
             if (sc.hasNext(stateRegex)) {
                 nextStateStr = sc.next(stateRegex);
             } else {
+                //TODO for testing
                 System.out.println("Unknown state: " + sc.next());
 
                 throw new IOException("Unknown state: " + sc.next());
