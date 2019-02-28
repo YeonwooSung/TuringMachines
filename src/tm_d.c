@@ -138,7 +138,10 @@ char run_d(State *state, Tape *tape) {
         }
 
         //break the transition loop if the turing machine gets the accepted state.
-        if (state->accept == 'a') {
+        // if (state->accept == 'a') {
+        //     break;
+        // }
+        if (!tape) {
             break;
         }
 
