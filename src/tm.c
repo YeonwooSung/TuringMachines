@@ -119,6 +119,9 @@ State *findState(State *s, char *name) {
  * @params {symbol} The tape symbol that should be validated
  */
 void validateSymbolFromAlphabetList(Alphabets *list, char symbol) {
+    if (symbol == '_')
+        return;
+
     while (list) {
         if (list->alphabet != symbol) {
             list = list->next;
@@ -126,8 +129,6 @@ void validateSymbolFromAlphabetList(Alphabets *list, char symbol) {
             return;
         }
     }
-
-    printf("hello!\n");
 
     printf("input error\n");
     exit(2);
