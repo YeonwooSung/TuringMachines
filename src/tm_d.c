@@ -172,7 +172,11 @@ char run_d(State *state, Tape *tape) {
     }
 
     if (noChanges) {
-        printf("%lu \n", num_of_transitions - 1);
+        if (tape) {
+            printf("%lu \n", num_of_transitions - 1);
+        } else {
+            printf("%lu \n", num_of_transitions);
+        }
     } else {
         printf("%lu \n", num_of_transitions);
     }
