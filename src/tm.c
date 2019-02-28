@@ -366,7 +366,13 @@ int main(int argc, char *argv[]) {
 
             Alphabets *list = readDescription(argv[1], 1, s);
 
-            Tape *tape = readTheInputTape(list, argv[2]);
+            FILE *f = fopen(argv[2], "r");
+
+            if (f == NULL) {
+                exit(3);
+            }
+
+            Tape *tape = readTheInputTape(list, f);
 
             //TODO free the alphabet list
 
@@ -380,7 +386,7 @@ int main(int argc, char *argv[]) {
 
         Alphabets *list = readDescription(argv[1], 1, s);
 
-        Tape *tape = readTheInputTape(list, NULL);
+        Tape *tape = readTheInputTape(list, stdin);
 
         //TODO free the alphabet list
 
