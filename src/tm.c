@@ -261,7 +261,6 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
 
         // iterate the linked list of states
         while (s_tmp) {
-            printf("!%s! and !%s!\n", s_tmp->name, splited[0]);
             // use conditional statement to find the corresponding state node
             if (strcmp(s_tmp->name, splited[0]) != 0) {
                 s_tmp = s_tmp->next;
@@ -274,7 +273,7 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
                 t->move = *splited[4];
                 t->next = NULL;
 
-                State *target = findState(s, splited[0]);
+                State *target = findState(s, splited[2]);
 
                 if (target) {
                     t->newState = target;
