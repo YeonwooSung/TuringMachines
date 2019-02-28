@@ -248,6 +248,13 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
             }
         }
 
+        int alphabet_num = atoi(splited[1]);
+
+        if (counter - 2 != alphabet_num) {
+            printf("input error\n");
+            exit(2);
+        }
+
 
         list = (Alphabets *) malloc(sizeof(Alphabets));
 
