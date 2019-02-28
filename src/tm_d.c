@@ -26,7 +26,13 @@ char validateInputSymbol(Alphabets *list, char c) {
 
 
 Tape *readTheInputTape(Alphabets *list, char *filePath) {
-    FILE *f = fopen(filePath, "r");
+    FILE *f;
+
+    if (filePath) {
+        f = fopen(filePath, "r");
+    } else {
+        f = stdin;
+    }
 
     if (f == NULL) {
         exit(3);

@@ -371,10 +371,24 @@ int main(int argc, char *argv[]) {
             //TODO free the alphabet list
 
             run_d(s, tape); //run the turing machine
+
+            //TODO free state and transitions
         }
 
-    } else {
+    } else if (argc != 1) {
         printUsage();
+    } else {
+        State *s = (State *)malloc(sizeof(State));
+
+        Alphabets *list = readDescription(argv[1], 1, s);
+
+        Tape *tape = readTheInputTape(list, NULL);
+
+        //TODO free the alphabet list
+
+        run_d(s, tape); //run the turing machine
+
+        //TODO free state and transitions
     }
 
     return 0;
