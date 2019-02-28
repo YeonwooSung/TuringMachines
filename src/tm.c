@@ -360,12 +360,12 @@ int main(int argc, char *argv[]) {
 
             Alphabets *list = readDescription(argv[1], 0, s);
 
-            readInputTape(list, argv[2]);
-
             //TODO nondeterministic TM
         } else {
 
             Alphabets *list = readDescription(argv[1], 1, s);
+
+            readInputTape(list, argv[2]);
 
             //TODO read input file
         }
