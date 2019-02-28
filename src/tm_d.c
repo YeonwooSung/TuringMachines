@@ -104,7 +104,10 @@ void run_d(State *state, Tape *tape) {
             if (list->inputSymbol != tape->c) {
                 list = list->next;
             } else {
-                noChanges = 0;
+
+                if (tape->c != list->outputSymbol) {
+                    noChanges = 0;
+                }
 
                 tape->c = list->outputSymbol;
 
