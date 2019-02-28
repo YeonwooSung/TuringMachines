@@ -450,13 +450,8 @@ int main(int argc, char *argv[]) {
             char ret  = run_d(s, tape); //run the turing machine
 
             //TODO free state and transitions
-            printf("%d is the exit code\n", ret);
 
-            if (ret) {
-                exit(ret);
-            } else {
-                exit(0);
-            }
+            exit(ret);
 
         }
 
