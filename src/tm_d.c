@@ -95,11 +95,12 @@ char run_d(State *state, Tape *tape) {
         }
     }
 
+    char allProcessedInputSymbolsAreBlank = 0;
+
     while (tape) {
         TList *list = state->list;
 
         char foundTransition = 0;
-        char currentInputSymbolIsBlank = 0;
 
         while (list) {
 
@@ -110,7 +111,9 @@ char run_d(State *state, Tape *tape) {
                 tape->c = list->outputSymbol;
 
                 if (tape->c == '_') {
-                    currentInputSymbolIsBlank = 1;
+                    allProcessedInputSymbolsAreBlank = 1;
+                } else {
+                    allProcessedInputSymbolsAreBlank = 0;
                 }
 
                 switch (list->move) {
@@ -152,9 +155,10 @@ char run_d(State *state, Tape *tape) {
                 break;
             }
 
-            if (num_of_transitions == 0 && currentInputSymbolIsBlank != 0) {
+            if (num_of_transitions == 0 && allProcessedInputSymbolsAreBlank != 0) {
                 break;
             }
+
             num_of_transitions += 1;
             break;
         }
