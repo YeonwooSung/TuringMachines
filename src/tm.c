@@ -402,7 +402,7 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
                             } else {
                                 //ERROR!
                                 printf("input error\n");
-                                exit(3);
+                                exit(2);
                             }
                         }
 
@@ -411,7 +411,7 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
                         } else {
                             //ERROR!
                             printf("input error\n");
-                            exit(3);
+                            exit(2);
                         }
 
                     } else {
