@@ -161,6 +161,22 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
     //reads the file to get the name of states
     for (size_t i = 0; i < num_of_states; i++) {
         if (getline(&line, &len, f) != -1) {
+            char *tempLine = line;
+
+            char isAllWhiteSpace = 1;
+
+            // check if the all characters in the line is whitespace characters
+            for (int i = 0; i < len; i++) {
+                if (!isspace(*tempLine)) {
+                    isAllWhiteSpace = 0;
+                    break;
+                }
+            }
+
+            if (isAllWhiteSpace) { //TODO need to test
+                i -= 1;
+                continue;
+            }
 
             // check if this is the initial state.
             if (s_tmp) {
@@ -229,6 +245,9 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
 
             }
 
+        } else {
+            printf("input error\n");
+            exit(2);
         }
 
     } //for loop ends
@@ -251,13 +270,6 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
         }
 
         int a_len = strlen(splited[1]);
-
-        for (int i = 0; i < a_len; i++) {
-            if (!isdigit(splited[1][i])) {
-                printf("input error\n");
-                exit(2);
-            }
-        }
 
         int alphabet_num = atoi(splited[1]);
 
