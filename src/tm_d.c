@@ -146,7 +146,7 @@ char run_d(State *state, Tape *tape) {
             break;
         }
 
-        if (state->accept != 'a') {
+        if (state->accept == 'a') {
             break;
         }
 
