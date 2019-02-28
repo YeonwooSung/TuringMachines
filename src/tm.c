@@ -296,6 +296,13 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
 
     //read line to get the number of states
     if (getline(&line, &len, f) != -1) {
+
+        // check if the input line contains the substing "alphabet"
+        if (strstr(line, "alphabet")) {
+            printf("input error\n");
+            exit(2);
+        }
+
         char *str = (char *) malloc(len + 1);
 
         strcpy(str, line);
