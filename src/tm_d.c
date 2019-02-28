@@ -51,11 +51,13 @@ void readInputTape(Alphabets *list, char *filePath) {
 
             // check if the input symbol is whitespace character
             if (!isspace(c)) {
-                char ret = validateInputSymbol(list, c);
+                if (c != '_') {
+                    char ret = validateInputSymbol(list, c);
 
-                if (ret) {
-                    printf("input error\n");
-                    exit(2);
+                    if (ret) {
+                        printf("input error\n");
+                        exit(2);
+                    }
                 }
             }
 
