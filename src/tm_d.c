@@ -91,6 +91,7 @@ Tape *readTheInputTape(Alphabets *list, char *filePath) {
 void run_d(State *state, Tape *tape) {
     size_t num_of_transitions = 0;
     char entirelyBlank = 1;
+    char noChanges = 1;
     Tape *tapeHead = tape;
 
     while (tape) {
@@ -103,6 +104,7 @@ void run_d(State *state, Tape *tape) {
             if (list->inputSymbol != tape->c) {
                 list = list->next;
             } else {
+                noChanges = 0;
 
                 tape->c = list->outputSymbol;
 
@@ -152,7 +154,11 @@ void run_d(State *state, Tape *tape) {
         printf("accepted\n");
     }
 
-    printf("%lu \n", num_of_transitions);
+    if (noChanges) {
+        printf("%lu \n", num_of_transitions - 1);
+    } else {
+        printf("%lu \n", num_of_transitions);
+    }
 
     if (entirelyBlank) {
         printf("_\n");
