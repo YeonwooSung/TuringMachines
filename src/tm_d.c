@@ -146,6 +146,10 @@ char run_d(State *state, Tape *tape) {
             break;
         }
 
+        if (state->accept != 'a') {
+            break;
+        }
+
         //increase the number of transitions
         num_of_transitions += 1;
 
@@ -170,7 +174,7 @@ char run_d(State *state, Tape *tape) {
             ret = 1;
         }
     }
-
+    /*
     if (noChanges) {
         if (tape) {
             printf("%lu \n", num_of_transitions - 1);
@@ -179,7 +183,8 @@ char run_d(State *state, Tape *tape) {
         }
     } else {
         printf("%lu \n", num_of_transitions);
-    }
+    }*/
+    printf("%lu \n", num_of_transitions);
 
     if (entirelyBlank) {
         printf("_\n");
