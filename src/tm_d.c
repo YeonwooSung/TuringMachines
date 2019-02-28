@@ -142,6 +142,10 @@ char run_d(State *state, Tape *tape) {
         //     break;
         // }
         if (!tape) {
+            if (entirelyBlank) {
+                break;
+            }
+            num_of_transitions += 1;
             break;
         }
 
