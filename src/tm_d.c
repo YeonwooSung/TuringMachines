@@ -98,6 +98,7 @@ void run_d(State *state, Tape *tape) {
     size_t num_of_transitions = 0;
     char entirelyBlank = isAllBlank(tape);
     char noChanges = 1;
+    char virtual_transition = 0;
     Tape *tapeHead = tape;
 
     while (tape) {
@@ -140,6 +141,7 @@ void run_d(State *state, Tape *tape) {
         //TODO reject state -> stop running??
 
         if (foundTransition != 1) { //TODO
+            virtual_transition = 1;
             break;
         }
 
@@ -150,11 +152,16 @@ void run_d(State *state, Tape *tape) {
 
     tape = tapeHead;
 
-    //check if the state is accepted state
-    if (state->accept != 'r') {
-        printf("accepted\n");
-    } else {
+    // check if the virtual transition occurred
+    if (virtual_transition){
         printf("not accepted\n");
+    } else {
+        //check if the state is accepted state
+        if (state->accept != 'r') {
+            printf("accepted\n");
+        } else {
+            printf("not accepted\n");
+        }
     }
 
     if (noChanges) {
