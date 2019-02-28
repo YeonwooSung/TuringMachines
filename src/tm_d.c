@@ -91,35 +91,19 @@ Tape *readTheInputTape(Alphabets *list, char *filePath) {
 void run_d(State *state, Tape *tape) {
     size_t num_of_transitions = 0;
     char entirelyBlank = 1;
+    Tape *tapeHead = tape;
 
     while (tape) {
-        if (state) {
-            printf("state is not null\n");
-        } else {
-            printf("state is nulln");
-        }
-        if (state->list) {
-            printf("list is not null\n");
-        } else {
-            printf("list is null\n");
-        }
         TList *list = state->list;
 
+        char foundTransition = 0;
+
         while (list) {
-            printf("%c, %c\n", list->inputSymbol, tape->c);
+
             if (list->inputSymbol != tape->c) {
                 list = list->next;
             } else {
-                printf("test: tape->c = %c\n", tape->c);
-                printf("test: list->inputSymbol = %c\n", list->inputSymbol);
-                printf("test: list->outputSymbol = %c\n", list->outputSymbol);
-                printf("test: list->state is null??\n");
-                if (list->newState) {
-                    printf("no!\n");
-                } else {
-                    printf("yes...\n");
-                }
-                //TODO execute transition
+
                 tape->c = list->outputSymbol;
 
                 if (tape->c != '_') {
@@ -141,6 +125,8 @@ void run_d(State *state, Tape *tape) {
 
                 state = list->newState;
 
+                foundTransition = 1;
+
                 break;
             }
 
@@ -148,14 +134,16 @@ void run_d(State *state, Tape *tape) {
 
         //TODO reject state -> stop running??
 
+        if (foundTransition != 1) { //TODO
+            break;
+        }
+
+        //increase the number of transitions
+        num_of_transitions += 1;
+
     } //outer while loop ends
 
-    if (state->accept) {
-        printf("OK\n");
-    }else {
-        printf("uhh...\n");
-    }
-
+    tape = tapeHead;
 
     //check if the state is accepted state
     if (state->accept != 'a') {
@@ -169,7 +157,11 @@ void run_d(State *state, Tape *tape) {
     if (entirelyBlank) {
         printf("_\n");
     } else {
-        //TODO print tape state.
+        while (tape) {
+            printf("%c", tape->c);
+            tape = tape->next;
+        }
+        printf("\n");
     }
 
 }
