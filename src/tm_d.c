@@ -99,6 +99,7 @@ char run_d(State *state, Tape *tape) {
         TList *list = state->list;
 
         char foundTransition = 0;
+        char currentInputSymbolIsBlank = 0;
 
         while (list) {
 
@@ -107,6 +108,10 @@ char run_d(State *state, Tape *tape) {
             } else {
 
                 tape->c = list->outputSymbol;
+
+                if (tape->c == '_') {
+                    currentInputSymbolIsBlank = 1;
+                }
 
                 switch (list->move) {
                     case 'L' : 
@@ -142,7 +147,12 @@ char run_d(State *state, Tape *tape) {
         //     break;
         // }
         if (!tape) {
+
             if (entirelyBlank) {
+                break;
+            }
+
+            if (num_of_transitions == 0 && currentInputSymbolIsBlank != 0) {
                 break;
             }
             num_of_transitions += 1;
