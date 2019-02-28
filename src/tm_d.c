@@ -111,8 +111,8 @@ char run_d(State *state, Tape *tape) {
                         break;
                     case 'R' : 
                         //TODO need to test
-                        if (tape->next)
-                            tape = tape->next;
+                        //if (tape->next)
+                        tape = tape->next;
                         break;
                     case 'S' : break;
                     default:
