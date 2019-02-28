@@ -343,6 +343,7 @@ void printUsage() {
 }
 
 
+/* The main function of the turing machine */
 int main(int argc, char *argv[]) {
     if (argc > 1 && !strcmp(argv[1], "-help")) {
         printUsage();
@@ -365,9 +366,11 @@ int main(int argc, char *argv[]) {
 
             Alphabets *list = readDescription(argv[1], 1, s);
 
-            readInputTape(list, argv[2]);
+            Tape *tape = readTheInputTape(list, argv[2]);
 
-            //TODO read input file
+            //TODO free the alphabet list
+
+            run_d(s, tape); //run the turing machine
         }
 
     } else {
