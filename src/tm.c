@@ -142,13 +142,9 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
 
         if (strcmp(splited[0], "states") == 0) {
 
-            int a_len = strlen(splited[1]);
-
-            for (int i = 0; i < a_len; i++) {
-                if (!isdigit(splited[1][i])) {
-                    printf("input error\n");
-                    exit(2);
-                }
+            if (!isdigit(*splited[1])) {
+                printf("input error\n");
+                exit(2);
             }
 
             num_of_states = atoi(splited[1]);
