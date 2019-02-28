@@ -367,7 +367,7 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
 
                 char *moveSymbol = splited[4];
 
-                if (*moveSymbol != 'R' && *moveSymbol != 'L' && *moveSymbol != 'S' && strlen(splited[4]) != 2 && !isspace(*(moveSymbol + 1))) {
+                if (*splited[4] != 'R' && *splited[4] != 'L' && *splited[4] != 'S' && strlen(splited[4]) != 2 && !isspace(*(moveSymbol + 1))) {
                     printf("input error\n");
                     exit(2);
                 }
