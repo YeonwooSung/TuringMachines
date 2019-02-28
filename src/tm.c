@@ -271,6 +271,13 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
 
         int a_len = strlen(splited[1]);
 
+        for (int i = 0; i < a_len; i++) {
+            if (!isdigit(splited[1][i])) {
+                printf("input error\n");
+                exit(2);
+            }
+        }
+
         int alphabet_num = atoi(splited[1]);
 
         if (counter - 2 != alphabet_num) {
