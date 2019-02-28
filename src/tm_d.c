@@ -147,6 +147,8 @@ void run_d(State *state, Tape *tape) {
 
     tape = tapeHead;
 
+    printf("state->accept = %c\nstate->name = %s\n", state->accept, state->name);
+
     //check if the state is accepted state
     if (state->accept != 'a') {
         printf("not accepted\n");

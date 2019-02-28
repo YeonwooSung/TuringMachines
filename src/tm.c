@@ -157,8 +157,6 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
                 s_tmp->next = (State *) malloc(sizeof(State));
                 s_tmp = s_tmp->next;
 
-                printf("%s\n", line);
-
                 // use if-else statement to check if the new state is the accepted state or rejected state.
                 if (strchr(line, '+')) {
                     size_t counter = 0; //to count the number of splited strings
@@ -166,7 +164,6 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
 
                     s_tmp->accept = 'a';
                     s_tmp->name = strdup(splited[0]);
-                    printf("+ is here!\n");
 
                     free(splited); //TODO
 
