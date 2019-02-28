@@ -77,12 +77,14 @@ char run_d(State *state, Tape *tape) {
     if (!tape) { //TODO need to test
 
         TList *list = state->list;
+        virtual_transition = 1;
 
         while (list) {
             if (list->inputSymbol != '_') {
                 list = list->next;
             } else {
                 state = list->newState;
+                virtual_transition = 0;
                 break;
             }
         }
