@@ -127,6 +127,8 @@ void validateSymbolFromAlphabetList(Alphabets *list, char symbol) {
         }
     }
 
+    printf("hello!\n");
+
     printf("input error\n");
     exit(2);
 }
