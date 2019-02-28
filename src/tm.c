@@ -376,9 +376,11 @@ int main(int argc, char *argv[]) {
 
             //TODO free the alphabet list
 
-            run_d(s, tape); //run the turing machine
+            char ret  = run_d(s, tape); //run the turing machine
 
             //TODO free state and transitions
+
+            exit(ret);
         }
 
     } else if (argc != 1) {
@@ -392,9 +394,11 @@ int main(int argc, char *argv[]) {
 
         //TODO free the alphabet list
 
-        run_d(s, tape); //run the turing machine
+        char ret = run_d(s, tape); //run the turing machine
 
         //TODO free state and transitions
+
+        exit(ret);
     } else {
         printUsage();
     }

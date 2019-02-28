@@ -39,6 +39,6 @@ typedef struct tape {
 
 /* function prototypes */
 Tape *readTheInputTape(Alphabets *list, FILE *f);
-void run_d(State *state, Tape *tape);
+char run_d(State *state, Tape *tape);
 
 #endif //TM_H

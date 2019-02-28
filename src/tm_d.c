@@ -94,7 +94,7 @@ char isAllBlank(Tape *tape) {
  *
  * @param {}
  */
-void run_d(State *state, Tape *tape) {
+char run_d(State *state, Tape *tape) {
     size_t num_of_transitions = 0;
     char entirelyBlank = isAllBlank(tape);
     char noChanges = 1;
@@ -152,15 +152,21 @@ void run_d(State *state, Tape *tape) {
 
     tape = tapeHead;
 
+    char ret = 0;
+
     // check if the virtual transition occurred
     if (virtual_transition){
         printf("not accepted\n");
+
+        ret = 1;
     } else {
         //check if the state is accepted state
         if (state->accept != 'r') {
             printf("accepted\n");
         } else {
             printf("not accepted\n");
+
+            ret = 1;
         }
     }
 
@@ -180,4 +186,5 @@ void run_d(State *state, Tape *tape) {
         printf("\n");
     }
 
+    return ret;
 }
