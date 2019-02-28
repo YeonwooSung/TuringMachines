@@ -110,6 +110,15 @@ void run_d(State *state, Tape *tape) {
             if (list->inputSymbol != tape->c) {
                 list = list->next;
             } else {
+                printf("test: tape->c = %c\n", tape->c);
+                printf("test: list->inputSymbol = %c\n", list->inputSymbol);
+                printf("test: list->outputSymbol = %c\n", list->outputSymbol);
+                printf("test: list->state is null??\n");
+                if (list->newState) {
+                    printf("no!\n");
+                } else {
+                    printf("yes...\n");
+                }
                 //TODO execute transition
                 tape->c = list->outputSymbol;
 
@@ -132,15 +141,7 @@ void run_d(State *state, Tape *tape) {
 
                 state = list->newState;
 
-                printf("test: tape->c = %c\n", tape->c);
-                printf("test: list->inputSymbol = %c\n", list->inputSymbol);
-                printf("test: list->outputSymbol = %c\n", list->outputSymbol);
-                printf("test: list->state is null??\n");
-                if (list->newState) {
-                    printf("no!\n");
-                } else {
-                    printf("yes...\n");
-                }
+                break;
             }
 
         } //inner while loop ends
