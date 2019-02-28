@@ -451,7 +451,12 @@ int main(int argc, char *argv[]) {
 
             //TODO free state and transitions
 
-            exit(ret);
+            if (ret) {
+                exit(ret);
+            } else {
+                exit(0);
+            }
+
         }
 
     } else if (argc != 1) {
