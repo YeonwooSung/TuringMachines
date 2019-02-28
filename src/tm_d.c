@@ -6,26 +6,6 @@
 #include <ctype.h>
 
 
-/**
- * The aim of this function is to check if the given character is in the list of alphabets.
- *
- * @params {list} A linked list of alphabets
- * @params {c} An input symbol
- * @return Returns 0 if the input symbol is valid. Otherwise, returns 1.
- */
-char validateInputSymbol(Alphabets *list, char c) {
-    while (list) {
-        if (list->alphabet != c) {
-            list = list->next;
-        } else {
-            return 0;
-        }
-    }
-
-    return 1;
-}
-
-
 Tape *readTheInputTape(Alphabets *list, FILE *f) {
 
     char *line = NULL;
@@ -48,14 +28,7 @@ Tape *readTheInputTape(Alphabets *list, FILE *f) {
 
             // check if the input symbol is whitespace character
             if (!isspace(c)) {
-                if (c != '_') {
-                    char ret = validateInputSymbol(list, c);
-
-                    if (ret) {
-                        printf("input error\n");
-                        exit(2);
-                    }
-                }
+                validateSymbolFromAlphabetList(list, c);
 
                 // check if this is not the first input symbol
                 if (tape->c) {
