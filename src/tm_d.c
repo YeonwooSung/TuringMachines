@@ -74,7 +74,12 @@ char run_d(State *state, Tape *tape) {
     char virtual_transition = 0;
     Tape *tapeHead = tape;
 
-    if (!tape) { //TODO need to test
+
+    /* 
+     * If the linked list of tape is null (no input file given), 
+     * check if the initial state hass any transition that gets the '_' as input symbol.
+     */
+    if (!tape) {
 
         TList *list = state->list;
         virtual_transition = 1;
@@ -133,9 +138,9 @@ char run_d(State *state, Tape *tape) {
         }
 
         //break the transition loop if the turing machine gets the accepted state.
-        // if (state->accept == 'a') {
-        //     break;
-        // }
+        if (state->accept == 'a') {
+            break;
+        }
 
         //increase the number of transitions
         num_of_transitions += 1;
