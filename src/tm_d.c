@@ -148,11 +148,16 @@ char run_d(State *state, Tape *tape) {
     if (entirelyBlank) {
         printf("_\n");
     } else {
-        while (tape) {
-            printf("%c", tape->c);
-            tape = tape->next;
+        // check if the tape is null (no input file)
+        if (tape) {
+            while (tape) {
+                printf("%c", tape->c);
+                tape = tape->next;
+            }
+            printf("\n");
+        } else {
+            printf("_\n");
         }
-        printf("\n");
     }
 
     return ret;
