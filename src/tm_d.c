@@ -122,6 +122,16 @@ void run_d(State *state, Tape *tape) {
                 state = list->newState;
             }
 
+            printf("test: tape->c = %c\n", tape->c);
+            printf("test: list->inputSymbol = %c\n", list->inputSymbol);
+            printf("test: list->outputSymbol = %c\n", list->outputSymbol);
+            printf("test: list->state is null??");
+            if (list->newState) {
+                printf("yes...");
+            } else {
+                printf("no!");
+            }
+
         } //inner while loop ends
 
         //TODO reject state -> stop running??
