@@ -376,8 +376,6 @@ int main(int argc, char *argv[]) {
         }
 
     } else if (argc != 1) {
-        printUsage();
-    } else {
         State *s = (State *)malloc(sizeof(State));
 
         Alphabets *list = readDescription(argv[1], 1, s);
@@ -389,6 +387,8 @@ int main(int argc, char *argv[]) {
         run_d(s, tape); //run the turing machine
 
         //TODO free state and transitions
+    } else {
+        printUsage();
     }
 
     return 0;
