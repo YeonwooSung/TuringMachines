@@ -83,6 +83,7 @@ char run_d(State *state, Tape *tape) {
                 list = list->next;
             } else {
                 state = list->newState;
+                break;
             }
         }
     }
