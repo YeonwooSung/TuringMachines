@@ -74,6 +74,19 @@ char run_d(State *state, Tape *tape) {
     char virtual_transition = 0;
     Tape *tapeHead = tape;
 
+    if (!tape) { //TODO need to test
+
+        TList *list = state->list;
+
+        while (list) {
+            if (list->inputSymbol != '_') {
+                list = list->next;
+            } else {
+                state = list->newState;
+            }
+        }
+    }
+
     while (tape) {
         TList *list = state->list;
 
@@ -134,10 +147,10 @@ char run_d(State *state, Tape *tape) {
         ret = 1;
     } else {
         //check if the state is accepted state
-        if (state->accept != 'r') {
-            printf("accepted\n");
-        } else {
+        if (state->accept != 'a') {
             printf("not accepted\n");
+        } else {
+            printf("accepted\n");
 
             ret = 1;
         }
