@@ -106,6 +106,7 @@ void run_d(State *state, Tape *tape) {
         TList *list = state->list;
 
         while (list) {
+            printf("%c, %c\n", list->inputSymbol, tape->c);
             if (list->inputSymbol != tape->c) {
                 list = list->next;
             } else {
