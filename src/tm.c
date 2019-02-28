@@ -123,8 +123,7 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
     FILE *f = fopen(filePath, "r");
 
     if (f == NULL) {
-        printf("Error (File not found): \'%s\'\n", filePath);
-        exit(2);
+        exit(3);
     }
 
     char *line = NULL;

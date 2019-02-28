@@ -29,8 +29,7 @@ void readInputTape(Alphabets *list, char *filePath) {
     FILE *f = fopen(filePath, "r");
 
     if (f == NULL) {
-        printf("Error (File not found): \'%s\'\n", filePath);
-        exit(2);
+        exit(3);
     }
 
     char *line = NULL;
