@@ -386,7 +386,9 @@ int main(int argc, char *argv[]) {
 
         Alphabets *list = readDescription(argv[1], 1, s);
 
-        Tape *tape = readTheInputTape(list, stdin);
+        FILE *f = freopen("", "rb", stdin);
+
+        Tape *tape = readTheInputTape(list, f);
 
         //TODO free the alphabet list
 
