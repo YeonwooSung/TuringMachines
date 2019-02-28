@@ -127,8 +127,6 @@ void run_d(State *state, Tape *tape) {
 
                 state = list->newState;
 
-                printf("state->accept = %c\nstate->name = %s\n", state->accept, state->name);
-
                 foundTransition = 1;
 
                 break;
