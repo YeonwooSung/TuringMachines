@@ -1,8 +1,8 @@
-#include <stdio.h>
+#include "tm.h"
+
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include "tm.h"
 
 
 #define MAX_LENGTH 1000
@@ -388,13 +388,9 @@ int main(int argc, char *argv[]) {
 
         Alphabets *list = readDescription(argv[1], 1, s);
 
-        FILE *f = freopen("", "rb", stdin);
-
-        Tape *tape = readTheInputTape(list, f);
-
         //TODO free the alphabet list
 
-        char ret = run_d(s, tape); //run the turing machine
+        char ret = run_d(s, NULL); //run the turing machine
 
         //TODO free state and transitions
 

@@ -1,6 +1,8 @@
 #ifndef TM_H
 #define TM_H
 
+#include <stdio.h>
+
 struct state;
 
 
