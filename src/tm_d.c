@@ -104,9 +104,15 @@ char run_d(State *state, Tape *tape) {
                 tape->c = list->outputSymbol;
 
                 switch (list->move) {
-                    case 'L' : tape = tape->prev;
+                    case 'L' : 
+                        //TODO need to test
+                        if (tape->prev)
+                            tape = tape->prev;
                         break;
-                    case 'R' : tape = tape->next;
+                    case 'R' : 
+                        //TODO need to test
+                        if (tape->next)
+                            tape = tape->next;
                         break;
                     case 'S' : break;
                     default:
