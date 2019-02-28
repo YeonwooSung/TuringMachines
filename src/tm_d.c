@@ -138,6 +138,12 @@ void run_d(State *state, Tape *tape) {
 
     } //outer while loop ends
 
+    if (state->accept) {
+        printf("OK\n");
+    }else {
+        printf("uhh...\n");
+    }
+
 
     //check if the state is accepted state
     if (state->accept != 'a') {
