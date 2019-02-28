@@ -88,6 +88,7 @@ char isAllBlank(Tape *tape) {
         if (tape->c != '_') {
             return 0;
         }
+        tape = tape->next;
     }
     return 1;
 }
