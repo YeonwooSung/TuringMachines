@@ -138,6 +138,8 @@ char run_d(State *state, Tape *tape) {
 
         if (state->accept == 'a') {
             break;
+        } else if(state->accept == 'r') { //TODO need to test
+            break;
         }
 
         //increase the number of transitions
