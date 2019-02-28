@@ -98,7 +98,6 @@ char isAllBlank(Tape *tape) {
 char run_d(State *state, Tape *tape) {
     size_t num_of_transitions = 0;
     char entirelyBlank = isAllBlank(tape);
-    char noChanges = 1;
     char virtual_transition = 0;
     Tape *tapeHead = tape;
 
@@ -112,10 +111,6 @@ char run_d(State *state, Tape *tape) {
             if (list->inputSymbol != tape->c) {
                 list = list->next;
             } else {
-
-                if (tape->c != list->outputSymbol) { //TODO
-                    noChanges = 0;
-                }
 
                 tape->c = list->outputSymbol;
 
@@ -174,16 +169,7 @@ char run_d(State *state, Tape *tape) {
             ret = 1;
         }
     }
-    /*
-    if (noChanges) {
-        if (tape) {
-            printf("%lu \n", num_of_transitions - 1);
-        } else {
-            printf("%lu \n", num_of_transitions);
-        }
-    } else {
-        printf("%lu \n", num_of_transitions);
-    }*/
+
     printf("%lu \n", num_of_transitions);
 
     if (entirelyBlank) {
