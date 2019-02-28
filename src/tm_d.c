@@ -83,6 +83,16 @@ Tape *readTheInputTape(Alphabets *list, char *filePath) {
 }
 
 
+char isAllBlank(Tape *tape) {
+    while (tape) {
+        if (tape->c != '_') {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+
 /**
  * Runs the deterministic turing machine.
  *
@@ -90,7 +100,7 @@ Tape *readTheInputTape(Alphabets *list, char *filePath) {
  */
 void run_d(State *state, Tape *tape) {
     size_t num_of_transitions = 0;
-    char entirelyBlank = 1;
+    char entirelyBlank = isAllBlank(tape);
     char noChanges = 1;
     Tape *tapeHead = tape;
 
@@ -105,17 +115,11 @@ void run_d(State *state, Tape *tape) {
                 list = list->next;
             } else {
 
-                if (tape->c != list->outputSymbol) {
+                if (tape->c != list->outputSymbol) { //TODO
                     noChanges = 0;
                 }
 
                 tape->c = list->outputSymbol;
-
-                if (tape->c != '_') {
-                    entirelyBlank = entirelyBlank & 0;
-                } else {
-                    entirelyBlank = entirelyBlank & 1;
-                }
 
                 switch (list->move) {
                     case 'L' : tape = tape->prev;
