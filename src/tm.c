@@ -280,6 +280,7 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
                     t->newState = target;
                 } else {
                     //TODO need to test
+                    printf("test!\n");
                     printf("input error\n");
                     exit(2);
                 }
