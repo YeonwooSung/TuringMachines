@@ -119,7 +119,7 @@ State *findState(State *s, char *name) {
  * @param {isDeterministic} 1 is the turing machine is deterministic. Otherwise, 0.
  * @param {s} The linked list of states
  */
-void readDescription(char *filePath, char isDeterministic, State *s) {
+Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
     FILE *f = fopen(filePath, "r");
 
     if (f == NULL) {
@@ -245,13 +245,12 @@ void readDescription(char *filePath, char isDeterministic, State *s) {
             tmp = tmp->next;
             tmp->alphabet = *splited[i];
         }
+
         tmp->next = NULL;
     }
 
     //use getline() to read a line from the description file
     while (getline(&line, &len, f) != -1) {
-        printf("%s", line); //TODO debugging
-
         char *str = (char *)malloc(len + 1);
 
         strcpy(str, line);
@@ -279,14 +278,15 @@ void readDescription(char *filePath, char isDeterministic, State *s) {
 
                 if (target) {
                     t->newState = target;
-                    printf("target name: %s\n", target->name); //TODO need to test
                 } else {
-                    //TODO what if the state is not in the linked list??
+                    //TODO need to test
+                    printf("input error\n");
+                    exit(2);
                 }
 
                 //check wheter s_tmp->list is null or not
                 if (s_tmp->list) {
-                    //TODO if the t list is not null
+
                     if (isDeterministic) {
                         TList *tempList = s_tmp->list;
 
@@ -330,6 +330,8 @@ void readDescription(char *filePath, char isDeterministic, State *s) {
         }
 
     }
+
+    return list;
 }
 
 
@@ -356,12 +358,14 @@ int main(int argc, char *argv[]) {
         //check if the number of command line arguments is 3
         if (argc  != 3) {
 
-            readDescription(argv[1], 0, s);
+            Alphabets *list = readDescription(argv[1], 0, s);
+
+            readInputTape(list, argv[2]);
 
             //TODO nondeterministic TM
         } else {
 
-            readDescription(argv[1], 1, s);
+            Alphabets *list = readDescription(argv[1], 1, s);
 
             //TODO read input file
         }

@@ -29,4 +29,15 @@ typedef struct alphabets {
     struct alphabets *next;
 } Alphabets;
 
+
+typedef struct tape {
+    char c;
+    struct tape *prev;
+    struct tape *next;
+} Tape;
+
+
+/* function prototypes */
+void readInputTape(Alphabets *list, char *filePath)
+
 #endif //TM_H
