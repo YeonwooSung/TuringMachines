@@ -140,8 +140,15 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
         size_t counter = 0; //to count the number of splited strings
         char **splited = splitStr(str, ' ', &counter);
 
+        // check the input format
+        if (counter != 2) {
+            printf("input error\n");
+            exit(2);
+        }
+
         if (strcmp(splited[0], "states") == 0) {
 
+            // check the number format
             if (!isdigit(*splited[1])) {
                 printf("input error\n");
                 exit(2);
@@ -149,6 +156,7 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
 
             num_of_states = atoi(splited[1]);
 
+            // check if the number of states is 0
             if (num_of_states == 0) {
                 printf("input error\n");
                 exit(2);
