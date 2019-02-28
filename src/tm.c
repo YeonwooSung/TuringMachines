@@ -120,7 +120,7 @@ State *findState(State *s, char *name) {
  * @param {s} The linked list of states
  */
 Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
-    FILE *f = fopen(filePath, "r");
+    FILE *f = fopen(filePath, "rb");
 
     if (f == NULL) {
         exit(3);
@@ -366,7 +366,7 @@ int main(int argc, char *argv[]) {
 
             Alphabets *list = readDescription(argv[1], 1, s);
 
-            FILE *f = fopen(argv[2], "r");
+            FILE *f = fopen(argv[2], "rb");
 
             if (f == NULL) {
                 exit(3);
