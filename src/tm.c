@@ -156,6 +156,11 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
 
     //read line to get the number of states
     if (getline(&line, &len, f) != -1) {
+        if (strcmp(line, "\n") == 0) {
+            printf("input error\n");
+            exit(2);
+        }
+
         char *str = (char *) malloc(len + 1);
 
         strcpy(str, line);
@@ -185,6 +190,9 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
                 exit(2);
             }
         }
+    } else {
+        printf("input error\n");
+        exit(2);
     }
 
     State *s_tmp = NULL;
