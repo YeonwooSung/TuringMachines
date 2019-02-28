@@ -150,10 +150,10 @@ char run_d(State *state, Tape *tape) {
         //check if the state is accepted state
         if (state->accept != 'a') {
             printf("not accepted\n");
-        } else {
-            printf("accepted\n");
 
             ret = 1;
+        } else {
+            printf("accepted\n");
         }
     }
 
