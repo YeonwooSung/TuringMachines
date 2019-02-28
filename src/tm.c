@@ -113,6 +113,26 @@ State *findState(State *s, char *name) {
 
 
 /**
+ * This function validates the tape symbol by iterating the alphabet list.
+ *
+ * @params {list} A linked list of alphabets
+ * @params {symbol} The tape symbol that should be validated
+ */
+void validateSymbolFromAlphabetList(Alphabets *list, char symbol) {
+    while (list) {
+        if (list->alphabet != symbol) {
+            list = list->next;
+        } else {
+            return;
+        }
+    }
+
+    printf("input error\n");
+    exit(2);
+}
+
+
+/**
  * The aim of this function is to read the description file.
  *
  * @param {filePath} file path of the description file
@@ -333,7 +353,9 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
                 //let the turing machine know that the state1 is found
                 stateIsNotFound = 0;
 
-                //TODO check if splited[1] and splited[3] are valid alphabet
+                //TODO  check if splited[1] and splited[3] are valid alphabet
+                validateSymbolFromAlphabetList(list, *splited[1]);
+                validateSymbolFromAlphabetList(list, *splited[3]);
 
                 TList *t = (TList *) malloc(sizeof(TList));
 
@@ -352,6 +374,7 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
 
                 State *target = findState(s, splited[2]);
 
+                // check if the given name of state exists
                 if (target) {
                     t->newState = target;
                 } else {
