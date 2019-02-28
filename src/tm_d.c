@@ -108,6 +108,8 @@ void run_d(State *state, Tape *tape) {
 
                 tape->c = list->outputSymbol;
 
+                printf("list->inputSymbol = %c\nlist->state->name = %s\n", list->inputSymbol, list->newState->name);
+
                 if (tape->c != '_') {
                     entirelyBlank = entirelyBlank & 0;
                 } else {
