@@ -223,7 +223,7 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
     } //for loop ends
 
 
-    Alphabets *list = (Alphabets *) malloc(sizeof(Alphabets));
+    Alphabets *list;
 
     //read line to get the number of states
     if (getline(&line, &len, f) != -1) {
@@ -233,6 +233,24 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
 
         size_t counter = 0; //to count the number of splited strings
         char **splited = splitStr(str, ' ', &counter);
+
+        if (*splited[1] == '-' || *splited[1] == '0' || strcmp(splited[0], "alphabet")) {
+            printf("input error\n");
+            exit(2);
+        }
+
+        int a_len = strlen(splited[1]);
+
+        for (int i = 0; i < a_len; i++) {
+            if (!isdigit(splited[1][i])) {
+                printf("input error\n");
+                exit(2);
+            }
+        }
+
+
+        list = (Alphabets *) malloc(sizeof(Alphabets));
+
 
         list->alphabet = *splited[2];
 
@@ -278,8 +296,6 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
                 if (target) {
                     t->newState = target;
                 } else {
-                    //TODO need to test
-                    printf("test!\n");
                     printf("input error\n");
                     exit(2);
                 }
