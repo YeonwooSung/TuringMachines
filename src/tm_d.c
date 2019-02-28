@@ -95,9 +95,7 @@ char run_d(State *state, Tape *tape) {
         }
     }
 
-    char allProcessedInputSymbolsAreBlank = 0;
-
-    while (tape) {
+    while (1) {
         TList *list = state->list;
 
         char foundTransition = 0;
@@ -110,18 +108,14 @@ char run_d(State *state, Tape *tape) {
 
                 tape->c = list->outputSymbol;
 
-                if (tape->c == '_') {
-                    allProcessedInputSymbolsAreBlank = 1;
-                } else {
-                    allProcessedInputSymbolsAreBlank = 0;
-                }
-
                 switch (list->move) {
                     case 'L' : 
-                        tape = tape->prev;
+                        if (tape->prev)
+                            tape = tape->prev;
                         break;
                     case 'R' : 
-                        tape = tape->next;
+                        if (tape->next)
+                            tape = tape->next;
                         break;
                     case 'S' : break;
                     default:
@@ -146,20 +140,9 @@ char run_d(State *state, Tape *tape) {
         }
 
         //break the transition loop if the turing machine gets the accepted state.
-        // if (state->accept == 'a') {
-        //     break;
-        // }
-        if (!tape) {
-
-            if (entirelyBlank) {
-                break;
-            }
-
-            if (num_of_transitions == 0 && allProcessedInputSymbolsAreBlank != 0) {
-                break;
-            }
-
-            num_of_transitions += 1;
+        if (state->accept == 'a') {
+            break;
+        } else if (state->accept == 'r') {
             break;
         }
 
@@ -168,9 +151,12 @@ char run_d(State *state, Tape *tape) {
 
     } //outer while loop ends
 
+
+    //reset the pointer to the head node of the linked list
     tape = tapeHead;
 
-    char ret = 0;
+    char ret = 0; // this will be used to pass the correct exit code to main() function
+
 
     // check if the virtual transition occurred
     if (virtual_transition){
@@ -188,9 +174,11 @@ char run_d(State *state, Tape *tape) {
         }
     }
 
+    // print the number of transitions
     printf("%lu \n", num_of_transitions);
 
-    if (entirelyBlank) {
+
+    if (entirelyBlank) { //check if the input tape is entirely blank (all blank characters).
         printf("_\n");
     } else {
         // check if the tape is null (no input file)
