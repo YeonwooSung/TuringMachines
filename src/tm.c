@@ -333,11 +333,21 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
                 //let the turing machine know that the state1 is found
                 stateIsNotFound = 0;
 
+                //TODO check if splited[1] and splited[3] are valid alphabet
+
                 TList *t = (TList *) malloc(sizeof(TList));
 
                 t->inputSymbol = *splited[1];
                 t->outputSymbol = *splited[3];
-                t->move = *splited[4];
+
+                char *moveSymbol = splited[4];
+
+                if (*moveSymbol != 'R' && *moveSymbol != 'L' && *moveSymbol != 'S' && strlen(splited[4]) != 2 && !isspace(*(moveSymbol + 1))) {
+                    printf("input error\n");
+                    exit(2);
+                }
+
+                t->move = *splited[4]; 
                 t->next = NULL;
 
                 State *target = findState(s, splited[2]);
