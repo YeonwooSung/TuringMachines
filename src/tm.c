@@ -322,12 +322,16 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
 
         s_tmp = s;
 
+        char stateIsNotFound = 1;
+
         // iterate the linked list of states
         while (s_tmp) {
             // use conditional statement to find the corresponding state node
             if (strcmp(s_tmp->name, splited[0]) != 0) {
                 s_tmp = s_tmp->next;
             } else {
+                //let the turing machine know that the state1 is found
+                stateIsNotFound = 0;
 
                 TList *t = (TList *) malloc(sizeof(TList));
 
@@ -356,8 +360,8 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
                                 tempList = tempList->next;
                             } else {
                                 //ERROR!
-                                printf("Transition error: cannot have transitions that take same symbol and state\n");
-                                exit(0);
+                                printf("input error\n");
+                                exit(3);
                             }
                         }
 
@@ -365,8 +369,8 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
                             tempList->next = t;
                         } else {
                             //ERROR!
-                            printf("Transition error: cannot have transitions that take same symbol and state\n");
-                            exit(0);
+                            printf("input error\n");
+                            exit(3);
                         }
 
                     } else {
@@ -388,6 +392,12 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
                 break; //stop iterating the linked list of states.
 
             }
+        }
+
+        // check if the state1 is found from the input line
+        if (stateIsNotFound) {
+            printf("input error\n");
+            exit(2);
         }
 
     }
