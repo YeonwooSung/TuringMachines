@@ -38,6 +38,6 @@ typedef struct tape {
 
 
 /* function prototypes */
-void readInputTape(Alphabets *list, char *filePath)
+void readInputTape(Alphabets *list, char *filePath);
 
 #endif //TM_H
