@@ -105,13 +105,9 @@ char run_d(State *state, Tape *tape) {
 
                 switch (list->move) {
                     case 'L' : 
-                        //TODO need to test
-                        if (tape->prev)
-                            tape = tape->prev;
+                        tape = tape->prev;
                         break;
                     case 'R' : 
-                        //TODO need to test
-                        //if (tape->next)
                         tape = tape->next;
                         break;
                     case 'S' : break;
@@ -137,8 +133,6 @@ char run_d(State *state, Tape *tape) {
         }
 
         if (state->accept == 'a') {
-            break;
-        } else if(state->accept == 'r') { //TODO need to test
             break;
         }
 
