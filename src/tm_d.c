@@ -96,12 +96,11 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
      * If the linked list of tape is null (no input file given), consider the all blank input.
      */
     if (!tape) {
-        entirelyBlank = 1;
-
         while (1) {
 
             TList *list = state->list;
-            char isNotFound = 1;
+
+            char isNotFound = 1; //to check whether the state has particular transition or not
 
             if (list) {
                 while (list) {
@@ -150,7 +149,7 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
                     break;
                 }
 
-                num_of_transitions += 1;
+                num_of_transitions += 1; //increase the number of transitions
 
             } else {
                 virtual_transition = 1;

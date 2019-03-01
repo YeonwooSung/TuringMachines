@@ -326,24 +326,28 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
 
         size_t alphabet_num = atoi(splited[1]);
 
-        if (counter - 2 != alphabet_num) {
-            printf("input error\n");
-            exit(2);
-        }
-
-
         list = (Alphabets *) malloc(sizeof(Alphabets));
-
-
         list->alphabet = *splited[2];
 
         Alphabets *tmp = list;
 
+        size_t count_while_loop = 0;
+
         // use the loop to store all symbol alphabets in the linked list
         for (size_t i = 3; i < counter; i++) {
-            tmp->next = (Alphabets *)malloc(sizeof(Alphabets));
-            tmp = tmp->next;
-            tmp->alphabet = *splited[i];
+            if (!isspace(*splited[i])) {
+                tmp->next = (Alphabets *)malloc(sizeof(Alphabets));
+                tmp = tmp->next;
+                tmp->alphabet = *splited[i];
+
+                count_while_loop += 1; //count the number of non-whitespace characters
+            }
+        }
+
+        // compare the counted number and the result of atoi(splited[1])
+        if (count_while_loop + 1 != alphabet_num) {
+            printf("input error\n");
+            exit(2);
         }
 
         tmp->next = NULL;
@@ -538,7 +542,7 @@ int main(int argc, char *argv[]) {
         //free the alphabet list
         freeAlphabets(list);
 
-        char ret = run_d(s, NULL, 0); //run the turing machine
+        char ret = run_d(s, NULL, 1); //run the turing machine
 
         //TODO free state and transitions
 
