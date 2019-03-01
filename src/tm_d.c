@@ -63,11 +63,9 @@ Tape *readTheInputTape(Alphabets *list, FILE *f, char *check) {
 Tape *moveTape(Tape *tape, TList *list) {
     switch (list->move) {
         case 'L' : 
-            tape = tape->prev;
-            break;
+            return tape->prev;
         case 'R' : 
-            tape = tape->next;
-            break;
+            return tape->next;
         case 'S' : break;
         default:
             printf("input error");
@@ -163,12 +161,10 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
 
     } else {
 
-        char isOutputAllBlank = 1; //TODO need to test!!!
-
+        Tape *previousTape = tape;
 
         while (tape) {
             TList *list = state->list;
-            Tape *previousTape = tape;
 
             char foundTransition = 0;
 
@@ -180,9 +176,7 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
 
                     tape->c = list->outputSymbol;
 
-                    if (isOutputAllBlank && list->outputSymbol != '_') { //TODO need to test!!!
-                        isOutputAllBlank = 0;
-                    }
+                    previousTape = tape;
 
                     tape = moveTape(tape, list); //move tape
 
@@ -195,19 +189,17 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
 
             } //inner while loop ends
 
-            //TODO reject state -> stop running??
 
             if (foundTransition != 1) { //TODO
                 virtual_transition = 1;
                 break;
             }
 
-            //break the transition loop if the turing machine gets the accepted state.
-            if (state->accept == 'a') {
-                break;
-            } else if (state->accept == 'r') {
+            //break the transition loop if the turing machine gets the accepted state (or rejected state).
+            if (isAcceptedOrRejected(state)) {
                 break;
             }
+
 
             //increase the number of transitions
             num_of_transitions += 1;
@@ -235,20 +227,22 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
                                 state = list->newState;
                             } else {
 
-                                tape = (Tape *)malloc(sizeof(Tape));
+                                tape = (Tape *) malloc(sizeof(Tape));
                                 tape->c = list->outputSymbol;
 
                                 if (!tapeHead) {
                                     tapeHead = tape;
                                 }
 
-                                if (previousTape->next) {
-                                    previousTape->prev = tape;
-                                    tape->prev = NULL;
-                                    previousTape = tape;
-                                } else {
+                                if (!(previousTape->next)) {
                                     previousTape->next = tape;
+                                    tape->prev = previousTape;
                                     tape->next = NULL;
+                                    previousTape = tape;
+                                } else if (!(previousTape->prev)) {
+                                    previousTape->prev = tape;
+                                    tape->next = previousTape;
+                                    tape->prev = NULL;
                                     previousTape = tape;
                                 }
 
@@ -285,6 +279,7 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
                 if (isAcceptedOrRejected(state)) {
                     break;
                 }
+
             }
 
         } //outer while loop ends

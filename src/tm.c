@@ -205,7 +205,7 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
             char isAllWhiteSpace = 1;
 
             // check if the all characters in the line is whitespace characters
-            for (int i = 0; i < len; i++) {
+            for (size_t i = 0; i < len; i++) {
                 if (!isspace(*tempLine)) {
                     isAllWhiteSpace = 0;
                     break;
@@ -324,7 +324,7 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
             }
         }
 
-        int alphabet_num = atoi(splited[1]);
+        size_t alphabet_num = atoi(splited[1]);
 
         if (counter - 2 != alphabet_num) {
             printf("input error\n");
@@ -340,7 +340,7 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
         Alphabets *tmp = list;
 
         // use the loop to store all symbol alphabets in the linked list
-        for (int i = 3; i < counter; i++) {
+        for (size_t i = 3; i < counter; i++) {
             tmp->next = (Alphabets *)malloc(sizeof(Alphabets));
             tmp = tmp->next;
             tmp->alphabet = *splited[i];
@@ -379,8 +379,6 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
 
                 t->inputSymbol = *splited[1];
                 t->outputSymbol = *splited[3];
-
-                char *moveSymbol = splited[4];
 
                 // validate the move symbol
                 if (*splited[4] != 'R') {
@@ -502,6 +500,9 @@ int main(int argc, char *argv[]) {
         if (argc  != 3) {
 
             Alphabets *list = readDescription(argv[1], 0, s);
+
+            //free the alphabet list
+            freeAlphabets(list);
 
             //TODO nondeterministic TM
         } else {
