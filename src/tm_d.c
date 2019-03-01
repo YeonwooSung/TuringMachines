@@ -238,6 +238,10 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
                                 tape = (Tape *)malloc(sizeof(Tape));
                                 tape->c = list->outputSymbol;
 
+                                if (!tapeHead) {
+                                    tapeHead = tape;
+                                }
+
                                 if (previousTape->next) {
                                     previousTape->prev = tape;
                                     tape->prev = NULL;
