@@ -102,9 +102,19 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
 
             char isNotFound = 1; //to check whether the state has particular transition or not
 
+            char targetSymbol = '_';
+
+            if (tape) {
+                targetSymbol = tape->c;
+            }
+
+            // check if the state has list of transitions (if not, just consider it as virtual transition)
             if (list) {
+
+                //use while loop to iterate linked list of transitions
                 while (list) {
-                    if (list->inputSymbol != '_') {
+
+                    if (list->inputSymbol != targetSymbol) {
                         list = list->next;
                     } else {
 
@@ -126,17 +136,23 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
 
                             if (!isAcceptedOrRejected(state)) {
                                 if (list->move == 'R') {
-                                    tape->next = (Tape *)malloc(sizeof(Tape));
-                                    tape->next->prev = tape;
+                                    if (!(tape->next)) {
+                                        tape->next = (Tape *)malloc(sizeof(Tape));
+                                        tape->next->prev = tape;
+                                        tape->next->next = NULL;
+                                        tape->next->c = '_';
+                                    }
 
                                     tape = tape->next;
-                                    tape->next = NULL;
                                 } else if (list->move == 'L') {
-                                    tape->prev = (Tape *)malloc(sizeof(Tape));
-                                    tape->prev->next = tape;
+                                    if (!(tape->prev)) {
+                                        tape->prev = (Tape *)malloc(sizeof(Tape));
+                                        tape->prev->next = tape;
+                                        tape->prev->prev = NULL;
+                                        tape->prev->c = '_';
+                                    }
 
                                     tape = tape->prev;
-                                    tape->prev = NULL;
                                 }
                             }
 
@@ -160,7 +176,6 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
                                     tape = tape->prev;
                                     tape->c = '_';
                                 } else if (list->move == 'R') { //check if the move symbol is R
-                                    //TODO right
                                     tape->prev = NULL;
                                     tape->next = (Tape *)malloc(sizeof(Tape));
                                     tape->next->prev = tape;
