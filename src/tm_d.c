@@ -112,12 +112,13 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
                         isNotFound = 0;
 
                         //if output symbol is not blank, set the entierlyBlank to 0.
-                        if (list->outputSymbol != '_') {
+                        if (entirelyBlank && list->outputSymbol != '_') {
                             entirelyBlank = 0;
                         }
 
                         // check if tape is added
                         if (tape) {
+                            //TODO list->move R, S and L check!!
                             tape->next = (Tape *)malloc(sizeof(Tape));
                             tape->next->prev = NULL;
 
@@ -126,6 +127,7 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
                             tape->c = list->outputSymbol;
 
                         } else {
+                            //TODO list->move R, S and L check!!
                             tape = (Tape *) malloc(sizeof(Tape));
                             tape->prev = NULL;
                             tape->next = NULL;
