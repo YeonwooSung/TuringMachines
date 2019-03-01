@@ -107,6 +107,8 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
                     if (list->inputSymbol != '_') {
                         list = list->next;
                     } else {
+
+                        //convert the turing machine's state to the new state
                         state = list->newState;
 
                         isNotFound = 0;
@@ -118,22 +120,57 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
 
                         // check if tape is added
                         if (tape) {
-                            //TODO list->move R, S and L check!!
-                            tape->next = (Tape *)malloc(sizeof(Tape));
-                            tape->next->prev = NULL;
 
-                            tape = tape->next;
-                            tape->next = NULL;
+                            //replace the tape's symbol to the output symbol of the transition
                             tape->c = list->outputSymbol;
 
+                            if (!isAcceptedOrRejected(state)) {
+                                if (list->move == 'R') {
+                                    tape->next = (Tape *)malloc(sizeof(Tape));
+                                    tape->next->prev = tape;
+
+                                    tape = tape->next;
+                                    tape->next = NULL;
+                                } else if (list->move == 'L') {
+                                    tape->prev = (Tape *)malloc(sizeof(Tape));
+                                    tape->prev->next = tape;
+
+                                    tape = tape->prev;
+                                    tape->prev = NULL;
+                                }
+                            }
+
                         } else {
-                            //TODO list->move R, S and L check!!
                             tape = (Tape *) malloc(sizeof(Tape));
-                            tape->prev = NULL;
-                            tape->next = NULL;
                             tape->c = list->outputSymbol;
 
                             tapeHead = tape;
+
+                            if (isAcceptedOrRejected(state)) {
+                                tape->prev = NULL;
+                                tape->next = NULL;
+                            } else {
+
+                                if (list->move == 'L') { //check if the move symbol is L
+                                    tape->next = NULL;
+                                    tape->prev = (Tape *)malloc(sizeof(Tape));
+                                    tape->prev->next = tape;
+                                    tape->prev->prev = NULL;
+
+                                    tape = tape->prev;
+                                    tape->c = '_';
+                                } else if (list->move == 'R') { //check if the move symbol is R
+                                    //TODO right
+                                    tape->prev = NULL;
+                                    tape->next = (Tape *)malloc(sizeof(Tape));
+                                    tape->next->prev = tape;
+                                    tape->next->next = NULL;
+
+                                    tape = tape->next;
+                                    tape->c = '_';
+                                }
+                            }
+
                         }
 
                         break;
