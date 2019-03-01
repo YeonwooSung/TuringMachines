@@ -527,6 +527,8 @@ int main(int argc, char *argv[]) {
 
             Tape *tape = readTheInputTape(list, f, &entirelyBlanks);
 
+            fclose(f); //close the file pointer when the program finished reading the file
+
             //free the alphabet list
             freeAlphabets(list);
 
