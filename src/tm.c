@@ -355,6 +355,10 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
 
     //use getline() to read a line from the description file
     while (getline(&line, &len, f) != -1) {
+        if (strcmp(line, "\n") == 0) {
+            continue;
+        }
+
         char *str = (char *)malloc(len + 1);
 
         strcpy(str, line);
