@@ -231,7 +231,7 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
                     s_tmp->accept = 'a';
                     s_tmp->name = strdup(splited[0]);
 
-                    free(splited); //TODO
+                    free(splited);
 
                 } else if (strchr(line, '-')) {
                     size_t counter = 0; //to count the number of splited strings
@@ -240,7 +240,7 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
                     s_tmp->accept = 'r';
                     s_tmp->name = strdup(splited[0]);
 
-                    free(splited); //TODO
+                    free(splited);
 
                 } else {
                     s_tmp->accept = 0;
@@ -263,7 +263,7 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
                     s_tmp->accept = 'a';
                     s_tmp->name = strdup(splited[0]);
 
-                    free(splited); //TODO
+                    free(splited);
                 } else if (strchr(line, '-')) {
                     size_t counter = 0; //to count the number of splited strings
                     char **splited = splitStr(line, ' ', &counter);
@@ -271,7 +271,7 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
                     s_tmp->accept = 'r';
                     s_tmp->name = strdup(splited[0]);
 
-                    free(splited); //TODO
+                    free(splited);
                 } else {
                     s_tmp->accept = 0;
                     s_tmp->name = strdup(line);
@@ -371,7 +371,7 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
                 //let the turing machine know that the state1 is found
                 stateIsNotFound = 0;
 
-                //TODO  check if splited[1] and splited[3] are valid alphabet
+                //check if splited[1] and splited[3] are valid alphabet
                 validateSymbolFromAlphabetList(list, *splited[1]);
                 validateSymbolFromAlphabetList(list, *splited[3]);
 
@@ -469,6 +469,21 @@ void printUsage() {
     exit(0);
 }
 
+/**
+ * The aim of this function is to free the memory of linked list of alphabets.
+ *
+ * @param {list} The head node of the linked list.
+ */
+void freeAlphabets(Alphabets *list) {
+    Alphabets *temp;
+
+    while (list) {
+        temp = list->next;
+        free(list);
+        list = temp;
+    }
+}
+
 
 /* The main function of the turing machine */
 int main(int argc, char *argv[]) {
@@ -503,7 +518,8 @@ int main(int argc, char *argv[]) {
 
             Tape *tape = readTheInputTape(list, f, &entirelyBlanks);
 
-            //TODO free the alphabet list
+            //free the alphabet list
+            freeAlphabets(list);
 
             char ret  = run_d(s, tape, entirelyBlanks); //run the turing machine
 
@@ -518,7 +534,8 @@ int main(int argc, char *argv[]) {
 
         Alphabets *list = readDescription(argv[1], 1, s);
 
-        //TODO free the alphabet list
+        //free the alphabet list
+        freeAlphabets(list);
 
         char ret = run_d(s, NULL, 0); //run the turing machine
 
