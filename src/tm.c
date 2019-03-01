@@ -499,11 +499,13 @@ int main(int argc, char *argv[]) {
                 exit(3);
             }
 
-            Tape *tape = readTheInputTape(list, f);
+            char entirelyBlanks;
+
+            Tape *tape = readTheInputTape(list, f, &entirelyBlanks);
 
             //TODO free the alphabet list
 
-            char ret  = run_d(s, tape); //run the turing machine
+            char ret  = run_d(s, tape, entirelyBlanks); //run the turing machine
 
             //TODO free state and transitions
 
@@ -518,7 +520,7 @@ int main(int argc, char *argv[]) {
 
         //TODO free the alphabet list
 
-        char ret = run_d(s, NULL); //run the turing machine
+        char ret = run_d(s, NULL, 0); //run the turing machine
 
         //TODO free state and transitions
 

@@ -6,10 +6,11 @@
 #include <ctype.h>
 
 
-Tape *readTheInputTape(Alphabets *list, FILE *f) {
+Tape *readTheInputTape(Alphabets *list, FILE *f, char *check) {
 
     char *line = NULL;
     size_t len = 0;
+    char entirelyBlanks = 1;
 
     Tape *tape = (Tape *) malloc(sizeof(Tape));
     tape->c = 0;
@@ -30,6 +31,10 @@ Tape *readTheInputTape(Alphabets *list, FILE *f) {
             if (!isspace(c)) {
                 validateSymbolFromAlphabetList(list, c);
 
+                if (entirelyBlanks && c != '_') {
+                    entirelyBlanks = 0;
+                }
+
                 // check if this is not the first input symbol
                 if (tape->c) {
                     //add new tape to the linked list
@@ -48,18 +53,33 @@ Tape *readTheInputTape(Alphabets *list, FILE *f) {
 
     } // end of the while loop
 
+    *check = entirelyBlanks;
+
     return tape;
 }
 
 
-char isAllBlank(Tape *tape) {
-    while (tape) {
-        if (tape->c != '_') {
-            return 0;
-        }
-        tape = tape->next;
+
+Tape *moveTape(Tape *tape, TList *list) {
+    switch (list->move) {
+        case 'L' : 
+            tape = tape->prev;
+            break;
+        case 'R' : 
+            tape = tape->next;
+            break;
+        case 'S' : break;
+        default:
+            printf("input error");
+            exit(2);
     }
-    return 1;
+
+    return tape;
+}
+
+
+char isAcceptedOrRejected(State *state) {
+    return (state->accept == 'a' || state->accept == 'r') ? 1 : 0;
 }
 
 
@@ -68,95 +88,208 @@ char isAllBlank(Tape *tape) {
  *
  * @param {}
  */
-char run_d(State *state, Tape *tape) {
+char run_d(State *state, Tape *tape, char entirelyBlank) {
     size_t num_of_transitions = 0;
-    char entirelyBlank = isAllBlank(tape);
     char virtual_transition = 0;
     Tape *tapeHead = tape;
 
 
     /* 
-     * If the linked list of tape is null (no input file given), 
-     * check if the initial state hass any transition that gets the '_' as input symbol.
+     * If the linked list of tape is null (no input file given), consider the all blank input.
      */
     if (!tape) {
+        entirelyBlank = 1;
 
-        TList *list = state->list;
-        virtual_transition = 1;
+        while (1) {
 
-        while (list) {
-            if (list->inputSymbol != '_') {
-                list = list->next;
-            } else {
-                state = list->newState;
-                virtual_transition = 0;
-                break;
-            }
-        }
-    }
+            TList *list = state->list;
+            char isNotFound = 1;
 
-    while (1) {
-        TList *list = state->list;
+            if (list) {
+                while (list) {
+                    if (list->inputSymbol != '_') {
+                        list = list->next;
+                    } else {
+                        state = list->newState;
 
-        char foundTransition = 0;
+                        isNotFound = 0;
 
-        while (list) {
+                        //if output symbol is not blank, set the entierlyBlank to 0.
+                        if (list->outputSymbol != '_') {
+                            entirelyBlank = 0;
+                        }
 
-            if (list->inputSymbol != tape->c) {
-                list = list->next;
-            } else {
+                        // check if tape is added
+                        if (tape) {
+                            tape->next = (Tape *)malloc(sizeof(Tape));
+                            tape->next->prev = NULL;
 
-                tape->c = list->outputSymbol;
-
-                switch (list->move) {
-                    case 'L' : 
-                        if (tape->prev)
-                            tape = tape->prev;
-                        break;
-                    case 'R' : 
-                        if (tape->next)
                             tape = tape->next;
+                            tape->next = NULL;
+                            tape->c = list->outputSymbol;
+
+                        } else {
+                            tape = (Tape *) malloc(sizeof(Tape));
+                            tape->prev = NULL;
+                            tape->next = NULL;
+                            tape->c = list->outputSymbol;
+
+                            tapeHead = tape;
+                        }
+
                         break;
-                    case 'S' : break;
-                    default:
-                        printf("input error");
-                        exit(2);
+                    }
                 }
 
-                state = list->newState;
+                // if the new state is accepted or rejected, break the loop
+                if (isAcceptedOrRejected(state)) {
+                    break;
+                }
 
-                foundTransition = 1;
+                // if the current symbol does not have transition, which takes '_' as input, it is a virtual transition
+                if (isNotFound) {
+                    virtual_transition = 1;
+                    break;
+                }
 
+                num_of_transitions += 1;
+
+            } else {
+                virtual_transition = 1;
                 break;
             }
 
-        } //inner while loop ends
+        } // while loop ends
 
-        //TODO reject state -> stop running??
+    } else {
 
-        if (foundTransition != 1) { //TODO
-            virtual_transition = 1;
-            break;
-        }
-
-        //break the transition loop if the turing machine gets the accepted state.
-        if (state->accept == 'a') {
-            break;
-        } else if (state->accept == 'r') {
-            break;
-        }
-
-        //increase the number of transitions
-        num_of_transitions += 1;
-
-    } //outer while loop ends
+        char isOutputAllBlank = 1; //TODO need to test!!!
 
 
-    //reset the pointer to the head node of the linked list
-    tape = tapeHead;
+        while (tape) {
+            TList *list = state->list;
+            Tape *previousTape = tape;
 
-    char ret = 0; // this will be used to pass the correct exit code to main() function
+            char foundTransition = 0;
 
+            while (list) {
+
+                if (list->inputSymbol != tape->c) {
+                    list = list->next;
+                } else {
+
+                    tape->c = list->outputSymbol;
+
+                    if (isOutputAllBlank && list->outputSymbol != '_') { //TODO need to test!!!
+                        isOutputAllBlank = 0;
+                    }
+
+                    tape = moveTape(tape, list); //move tape
+
+                    state = list->newState;
+
+                    foundTransition = 1;
+
+                    break;
+                }
+
+            } //inner while loop ends
+
+            //TODO reject state -> stop running??
+
+            if (foundTransition != 1) { //TODO
+                virtual_transition = 1;
+                break;
+            }
+
+            //break the transition loop if the turing machine gets the accepted state.
+            if (state->accept == 'a') {
+                break;
+            } else if (state->accept == 'r') {
+                break;
+            }
+
+            //increase the number of transitions
+            num_of_transitions += 1;
+
+            /* 
+             * If the TM read all input tape, however, the TM is not in the accepted state, or reject state,
+             * add a blank symbol at the end of the
+             */
+            if (!tape) {
+                char checker;
+
+                while (1){
+                    TList *list = state->list;
+                    checker = 0;
+                    char checker2 = 1;
+
+                    while (list) {
+                        if (list->inputSymbol != '_') {
+                            list = list->next;
+                        } else {
+                            checker = 1;
+
+                            //check if the output symbol of current transition is '_', and the new state is accepted or rejected state
+                            if (list->outputSymbol == '_' && isAcceptedOrRejected(list->newState)) {
+                                state = list->newState;
+                            } else {
+
+                                tape = (Tape *)malloc(sizeof(Tape));
+                                tape->c = list->outputSymbol;
+
+                                if (previousTape->next) {
+                                    previousTape->prev = tape;
+                                    tape->prev = NULL;
+                                    previousTape = tape;
+                                } else {
+                                    previousTape->next = tape;
+                                    tape->next = NULL;
+                                    previousTape = tape;
+                                }
+
+                                state = list->newState;
+
+                                tape = moveTape(tape, list); //move tape
+
+                                if (state->accept != 'a' && state->accept != 'r' && !tape) {
+                                    checker2 = 0;
+                                }
+
+                                num_of_transitions += 1; //TODO
+
+                            }
+
+                            break;
+
+                        } //if-else ends
+
+                    }
+
+                    //TODO how to break while??
+                    if (checker2) {
+                        break;
+                    }
+
+                } //while(1) ends
+
+                if (!checker) {
+                    virtual_transition = 1;
+                    break;
+                }
+
+                if (isAcceptedOrRejected(state)) {
+                    break;
+                }
+            }
+
+        } //outer while loop ends
+
+    }
+
+    tape = tapeHead; //reset the pointer to the head node of the linked list
+
+    char ret = 0;
 
     // check if the virtual transition occurred
     if (virtual_transition){
@@ -174,11 +307,9 @@ char run_d(State *state, Tape *tape) {
         }
     }
 
-    // print the number of transitions
     printf("%lu \n", num_of_transitions);
 
-
-    if (entirelyBlank) { //check if the input tape is entirely blank (all blank characters).
+    if (entirelyBlank) {
         printf("_\n");
     } else {
         // check if the tape is null (no input file)

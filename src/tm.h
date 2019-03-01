@@ -40,8 +40,8 @@ typedef struct tape {
 
 
 /* function prototypes */
-Tape *readTheInputTape(Alphabets *list, FILE *f);
-char run_d(State *state, Tape *tape);
+Tape *readTheInputTape(Alphabets *list, FILE *f, char *check);
+char run_d(State *state, Tape *tape, char entirelyBlank);
 void validateSymbolFromAlphabetList(Alphabets *list, char symbol);
 
 #endif //TM_H
