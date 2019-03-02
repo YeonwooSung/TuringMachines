@@ -19,7 +19,18 @@ Tape *readTheInputTape(Alphabets *list, FILE *f, char *check) {
 
     Tape *tempTape = tape;
 
+    char noInput = 1;
+
     while (getline(&line, &len, f) != -1) {
+        // to check if there is no input data in the input file.
+        if (noInput) {
+            noInput = 0;
+        }
+
+        if (!strcmp(line, "\n")) {
+            continue; //skip the empty input line
+        }
+
         int len = strlen(line);
 
         char *tmp = line;
@@ -52,6 +63,10 @@ Tape *readTheInputTape(Alphabets *list, FILE *f, char *check) {
         }
 
     } // end of the while loop
+
+    if (noInput) {
+        tape->c = '_';
+    }
 
     *check = entirelyBlanks;
 
@@ -129,7 +144,7 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
                         }
 
                         // check if tape is added
-                        if (tape) {
+                        if (tapeHead) {
 
                             //replace the tape's symbol to the output symbol of the transition
                             tape->c = list->outputSymbol;
@@ -150,6 +165,9 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
                                         tape->prev->next = tape;
                                         tape->prev->prev = NULL;
                                         tape->prev->c = '_';
+
+                                        // as we added new node at the front of the head node, change the head node
+                                        tapeHead = tape;
                                     }
 
                                     tape = tape->prev;
@@ -169,20 +187,26 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
 
                                 if (list->move == 'L') { //check if the move symbol is L
                                     tape->next = NULL;
-                                    tape->prev = (Tape *)malloc(sizeof(Tape));
+                                    tape->prev = (Tape *) malloc(sizeof(Tape));
                                     tape->prev->next = tape;
                                     tape->prev->prev = NULL;
 
                                     tape = tape->prev;
                                     tape->c = '_';
+
+                                    // as we added new node at the front of the head node, change the head node
+                                    tapeHead = tape;
+
                                 } else if (list->move == 'R') { //check if the move symbol is R
+
                                     tape->prev = NULL;
-                                    tape->next = (Tape *)malloc(sizeof(Tape));
+                                    tape->next = (Tape *) malloc(sizeof(Tape));
                                     tape->next->prev = tape;
                                     tape->next->next = NULL;
 
                                     tape = tape->next;
                                     tape->c = '_';
+
                                 }
                             }
 
@@ -297,6 +321,9 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
                                     tape->next = previousTape;
                                     tape->prev = NULL;
                                     previousTape = tape;
+
+                                    // as we added new node at the front of the head node, change the head node
+                                    tapeHead = previousTape;
                                 }
 
                                 state = list->newState;
@@ -307,7 +334,7 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
                                     checker2 = 0;
                                 }
 
-                                num_of_transitions += 1; //TODO
+                                num_of_transitions += 1;
 
                             }
 
