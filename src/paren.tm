@@ -11,7 +11,7 @@ init ( lookForClosingParen ( R
 init _ checkComplete $ R
 lookForClosingParen ( lookForClosingParen ( R
 lookForClosingParen $ lookForClosingParen $ R
-lookForClosingParen _ checkComplete _ L
+lookForClosingParen _ checkComplete $ L
 lookForClosingParen ) lookForOpenParen $ L
 lookForOpenParen ( goToStart $ L
 lookForOpenParen $ lookForOpenParen $ L
