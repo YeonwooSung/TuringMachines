@@ -198,15 +198,17 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
 
     State *s_tmp = NULL;
 
+    register size_t i, j;
+
     //reads the file to get the name of states
-    for (size_t i = 0; i < num_of_states; i++) {
+    for (i = 0; i < num_of_states; i++) {
         if (getline(&line, &len, f) != -1) {
             char *tempLine = line;
 
             char isAllWhiteSpace = 1;
 
             // check if the all characters in the line is whitespace characters
-            for (size_t i = 0; i < len; i++) {
+            for (j = 0; j < len; j++) {
                 if (!isspace(*tempLine)) {
                     isAllWhiteSpace = 0;
                     break;
@@ -318,7 +320,10 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
 
         int a_len = strlen(splited[1]);
 
-        for (int i = 0; i < a_len; i++) {
+
+        register int i;
+
+        for (i = 0; i < a_len; i++) {
             if (!isdigit(splited[1][i])) {
                 printf("input error\n");
                 exit(2);
@@ -334,12 +339,15 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
 
         size_t count_while_loop = 0;
 
+
+        register size_t j;
+
         // use the loop to store all symbol alphabets in the linked list
-        for (size_t i = 3; i < counter; i++) {
-            if (!isspace(*splited[i])) {
-                tmp->next = (Alphabets *)malloc(sizeof(Alphabets));
+        for (j = 3; j < counter; j++) {
+            if (!isspace(*splited[j])) {
+                tmp->next = (Alphabets *) malloc(sizeof(Alphabets));
                 tmp = tmp->next;
-                tmp->alphabet = *splited[i];
+                tmp->alphabet = *splited[j];
 
                 count_while_loop += 1; //count the number of non-whitespace characters
             }
@@ -463,8 +471,11 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
             exit(2);
         }
 
+
+        register size_t i;
+
         //use for loop to free the splited string tokens
-        for (size_t i = 0; i < counter; i++) {
+        for (i = 0; i < counter; i++) {
             free(splited[i]);
         }
 
@@ -585,13 +596,26 @@ int main(int argc, char *argv[]) {
 
             Alphabets *list = readDescription(argv[2], 0, s);
 
+            FILE *f = fopen(argv[3], "rb");
+
+            if (f == NULL) {
+                exit(3);
+            }
+
+            char entirelyBlanks;
+
+            Tape *tape = readTheInputTape(list, f, &entirelyBlanks);
+
+            fclose(f); //close the file pointer when the program finished reading the file
+
             //free the alphabet list
             freeAlphabets(list);
 
             //TODO nondeterministic TM
+
         } else {
 
-            if (checkOptionForNonDet(argc, argv) || strcmp(argv[1], "-n")) {
+            if (checkOptionForNonDet(argc, argv)) {
                 Alphabets *list = readDescription(argv[1], 1, s);
 
                 FILE *f = fopen(argv[2], "rb");
