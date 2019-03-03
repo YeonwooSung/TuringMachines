@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <unistd.h>
 
 
 #define MAX_LENGTH 1000
@@ -462,6 +463,11 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
             exit(2);
         }
 
+        //use for loop to free the splited string tokens
+        for (size_t i = 0; i < counter; i++) {
+            free(splited[i]);
+        }
+
     }
 
     return list;
@@ -491,6 +497,76 @@ void freeAlphabets(Alphabets *list) {
 }
 
 
+/**
+ * The aim of this function is to free the linked list of transitions.
+ *
+ * @param {list} the head node of linked list.
+ */
+void freeTransitions(TList *list) {
+    TList *next;
+
+    while (list) {
+        next = list->next;
+        free(list);
+        list = next;
+    }
+}
+
+
+/**
+ * The aim of this function is to free the linked list of states.
+ *
+ * @param {state} the head node of linked list.
+ */
+void freeStates(State *state) {
+    State *next;
+
+    while (state) {
+        next = state->next;
+
+        freeTransitions(state->list);
+        free(state->name);
+        free(state);
+
+        state = next;
+    }
+}
+
+
+/**
+ * The aim of this function is to free the linked list of tapes.
+ *
+ * @param {tape} the head node of linked list.
+ */
+void freeTapes (Tape *tape) {
+    Tape *next;
+
+    while (tape) {
+        next = tape->next;
+
+        free(tape);
+        tape = next;
+    }
+}
+
+
+char checkOptionForNonDet(int argc, char *argv[]) {
+    char c;
+    while ((c = getopt (argc, argv, "n:")) != -1) {
+        switch(c) {
+            case 'n' : 
+                return 0;
+                break;
+            default:
+                printf("invalid option: %c\n", c);
+        }
+    }
+
+    return 1;
+}
+
+
+
 /* The main function of the turing machine */
 int main(int argc, char *argv[]) {
     if (argc > 1 && !strcmp(argv[1], "-help")) {
@@ -507,7 +583,7 @@ int main(int argc, char *argv[]) {
         //check if the number of command line arguments is 3
         if (argc  != 3) {
 
-            Alphabets *list = readDescription(argv[1], 0, s);
+            Alphabets *list = readDescription(argv[2], 0, s);
 
             //free the alphabet list
             freeAlphabets(list);
@@ -515,28 +591,39 @@ int main(int argc, char *argv[]) {
             //TODO nondeterministic TM
         } else {
 
-            Alphabets *list = readDescription(argv[1], 1, s);
+            if (checkOptionForNonDet(argc, argv) || strcmp(argv[1], "-n")) {
+                Alphabets *list = readDescription(argv[1], 1, s);
 
-            FILE *f = fopen(argv[2], "rb");
+                FILE *f = fopen(argv[2], "rb");
 
-            if (f == NULL) {
-                exit(3);
+                if (f == NULL) {
+                    exit(3);
+                }
+
+                char entirelyBlanks;
+
+                Tape *tape = readTheInputTape(list, f, &entirelyBlanks);
+
+                fclose(f); //close the file pointer when the program finished reading the file
+
+                //free the alphabet list
+                freeAlphabets(list);
+
+                char ret  = run_d(s, tape, entirelyBlanks); //run the turing machine
+
+                freeStates(s);
+                freeTapes(tape);
+
+                exit(ret);
+
+            } else {
+                Alphabets *list = readDescription(argv[2], 0, s);
+
+                //free the alphabet list
+                freeAlphabets(list);
+
+                //TODO run_n()
             }
-
-            char entirelyBlanks;
-
-            Tape *tape = readTheInputTape(list, f, &entirelyBlanks);
-
-            fclose(f); //close the file pointer when the program finished reading the file
-
-            //free the alphabet list
-            freeAlphabets(list);
-
-            char ret  = run_d(s, tape, entirelyBlanks); //run the turing machine
-
-            //TODO free state and transitions
-
-            exit(ret);
 
         }
 
@@ -550,7 +637,7 @@ int main(int argc, char *argv[]) {
 
         char ret = run_d(s, NULL, 1); //run the turing machine
 
-        //TODO free state and transitions
+        freeStates(s);
 
         exit(ret);
     } else {
