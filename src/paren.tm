@@ -8,7 +8,7 @@ accept +
 reject -
 alphabet 3 ( ) $
 init ( lookForClosingParen ( R
-init _ accept _ R
+init _ checkComplete $ R
 lookForClosingParen ( lookForClosingParen ( R
 lookForClosingParen $ lookForClosingParen $ R
 lookForClosingParen _ checkComplete _ L

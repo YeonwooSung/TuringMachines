@@ -1,4 +1,5 @@
-states 29
+states 30
+init
 placeHash
 first
 first1
@@ -20,38 +21,40 @@ toThird0
 toThird1
 toThird10
 toThird11
-sGoBack
-sGoBack#
-sGoBack##
-sGoBack1
-sGoBack1#
+goBack
+goBack#
+goBack##
+goBack1
+goBack1#
 goBack1##
 end +
 reject -
 alphabet 3 0 1 #
+init 0 placeHash 0 R
+init 1 placeHash 1 R
 placeHash 0 placeHash 0 R
 placeHash 1 placeHash 1 R
 placeHash # placeHash # R
-placeHash _ sGoBack # L
-sGoBack 0 sGoBack 0 L
-sGoBack 1 sGoBack 1 L
-sGoBack # sGoBack# # L
-sGoBack _ sGoBack _ L
-sGoBack# 0 sGoBack# 0 L
-sGoBack# 1 sGoBack# 1 L
-sGoBack# # sGoBack## # L
-sGoBack# _ sGoBack# _ L
-sGoBack## 0 sGoBack## 0 L
-sGoBack## 1 sGoBack## 1 L
-sGoBack## _ first _ R
-sGoBack1 0 sGoBack1 0 L
-sGoBack1 1 sGoBack1 1 L
-sGoBack1 # sGoBack1# # L
-sGoBack1 _ sGoBack1 _ L
-sGoBack1# 0 sGoBack1# 0 L
-sGoBack1# 1 sGoBack1# 1 L
-sGoBack1# # goBack1## # L
-sGoBack1# _ sGoBack1# _ L
+placeHash _ goBack # L
+goBack 0 goBack 0 L
+goBack 1 goBack 1 L
+goBack # goBack# # L
+goBack _ goBack _ L
+goBack# 0 goBack# 0 L
+goBack# 1 goBack# 1 L
+goBack# # goBack## # L
+goBack# _ goBack# _ L
+goBack## 0 goBack## 0 L
+goBack## 1 goBack## 1 L
+goBack## _ first _ R
+goBack1 0 goBack1 0 L
+goBack1 1 goBack1 1 L
+goBack1 # goBack1# # L
+goBack1 _ goBack1 _ L
+goBack1# 0 goBack1# 0 L
+goBack1# 1 goBack1# 1 L
+goBack1# # goBack1## # L
+goBack1# _ goBack1# _ L
 goBack1## 0 goBack1## 0 L
 goBack1## 1 goBack1## 1 L
 goBack1## _ first1 _ R
@@ -96,28 +99,28 @@ toThird 1 toThird 1 R
 toThird _ toThird _ R
 toThird # third # R
 third _ third _ R
-third # end # S
+third # end # R
 toThird0 0 toThird0 0 R
 toThird0 1 toThird0 1 R
 toThird0 _ toThird0 _ R
 toThird0 # third0 # R
 third0 _ third0 _ R
-third0 0 sGoBack _ L
+third0 0 goBack _ L
 toThird1 0 toThird1 0 R
 toThird1 1 toThird1 1 R
 toThird1 _ toThird1 _ R
 toThird1 # third1 # R
 third1 _ third1 _ R
-third1 1 sGoBack _ L
+third1 1 goBack _ L
 toThird10 0 toThird10 0 R
 toThird10 1 toThird10 1 R
 toThird10 _ toThird10 _ R
 toThird10 # third10 # R
 third10 _ third10 _ R
-third10 0 sGoBack1 _ L
+third10 0 goBack1 _ L
 toThird11 0 toThird11 0 R
 toThird11 1 toThird11 1 R
 toThird11 _ toThird11 _ R
 toThird11 # third11 # R
 third11 _ third11 _ R
-third11 1 sGoBack1 _ L
+third11 1 goBack1 _ L
