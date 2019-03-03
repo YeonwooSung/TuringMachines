@@ -617,6 +617,8 @@ int main(int argc, char *argv[]) {
                 exit(ret);
 
             } else {
+                //nondeterministic turing machine without having the input file.
+
                 Alphabets *list = readDescription(argv[2], 0, s);
 
                 //free the alphabet list
