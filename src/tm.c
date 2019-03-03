@@ -604,6 +604,8 @@ int main(int argc, char *argv[]) {
 
             char entirelyBlanks;
 
+            //TODO need to make the nondet-tm to read multiple tape files
+
             Tape *tape = readTheInputTape(list, f, &entirelyBlanks);
 
             fclose(f); //close the file pointer when the program finished reading the file
