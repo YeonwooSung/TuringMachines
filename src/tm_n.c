@@ -15,7 +15,6 @@ typedef struct state_set {
 char run_n(State *state, Tape *tape, char entirelyBlank) {
     size_t num_of_transitions = 0;
     char virtual_transition = 0;
-    size_t num_of_states = 1;
     Tape *tapeHead = tape;
 
     Set *set = (Set *) malloc(sizeof(Set));
@@ -29,18 +28,24 @@ char run_n(State *state, Tape *tape, char entirelyBlank) {
     if (tape) {
         while (1) {
 
-            //use the for loop to iterate the set of states
-            for (size_t i = 0; i < num_of_states; i++) {
-                state = set->state;
+            //iterate the set of states
+            while(set) {
+
+                State *s = set->state;
                 TList *list = state->list;
 
+                //iterate the transition list of current state
                 while (list) {
                     if (list->inputSymbol != tape->c) {
                         list = list->next;
                     } else {
-                        //TODO
+
+                        //TODO how does the nondeterministic TM process the tape??
+
                     }
                 }
+
+                set = set->next; //move to next state
 
             } //for loop ends
 
