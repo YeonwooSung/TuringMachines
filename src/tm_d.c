@@ -78,10 +78,12 @@ Tape *readTheInputTape(Alphabets *list, FILE *f, char *check) {
 Tape *moveTape(Tape *tape, TList *list) {
     switch (list->move) {
         case 'L' : 
-            return tape->prev;
+            if (tape->prev)
+                return tape->prev;
+            else
+                return tape;
         case 'R' : 
             return tape->next;
-        case 'S' : break;
         default:
             printf("input error");
             exit(2);
@@ -151,6 +153,8 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
 
                             if (!isAcceptedOrRejected(state)) {
                                 if (list->move == 'R') {
+
+                                    // check if the next node is null
                                     if (!(tape->next)) {
                                         tape->next = (Tape *)malloc(sizeof(Tape));
                                         tape->next->prev = tape;
@@ -160,17 +164,17 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
 
                                     tape = tape->next;
                                 } else if (list->move == 'L') {
-                                    if (!(tape->prev)) {
-                                        tape->prev = (Tape *)malloc(sizeof(Tape));
-                                        tape->prev->next = tape;
-                                        tape->prev->prev = NULL;
-                                        tape->prev->c = '_';
 
-                                        // as we added new node at the front of the head node, change the head node
-                                        tapeHead = tape;
+                                    /*
+                                     * Check if the previous node is null.
+                                     *
+                                     * If the read/write head is at the left-most end, when a “move left” 
+                                     * sinstruction results in staying put.
+                                     */
+                                    if (tape->prev) {
+                                        tape = tape->prev;
                                     }
 
-                                    tape = tape->prev;
                                 }
                             }
 
@@ -185,19 +189,7 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
                                 tape->next = NULL;
                             } else {
 
-                                if (list->move == 'L') { //check if the move symbol is L
-                                    tape->next = NULL;
-                                    tape->prev = (Tape *) malloc(sizeof(Tape));
-                                    tape->prev->next = tape;
-                                    tape->prev->prev = NULL;
-
-                                    tape = tape->prev;
-                                    tape->c = '_';
-
-                                    // as we added new node at the front of the head node, change the head node
-                                    tapeHead = tape;
-
-                                } else if (list->move == 'R') { //check if the move symbol is R
+                                if (list->move == 'R') { //check if the move symbol is R
 
                                     tape->prev = NULL;
                                     tape->next = (Tape *) malloc(sizeof(Tape));
@@ -240,7 +232,7 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
 
         Tape *previousTape = tape;
 
-        while (tape) {
+        while (1) {
             TList *list = state->list;
 
             char foundTransition = 0;
@@ -310,20 +302,12 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
                                 if (!tapeHead) {
                                     tapeHead = tape;
                                 }
-
+ 
                                 if (!(previousTape->next)) {
                                     previousTape->next = tape;
                                     tape->prev = previousTape;
                                     tape->next = NULL;
                                     previousTape = tape;
-                                } else if (!(previousTape->prev)) {
-                                    previousTape->prev = tape;
-                                    tape->next = previousTape;
-                                    tape->prev = NULL;
-                                    previousTape = tape;
-
-                                    // as we added new node at the front of the head node, change the head node
-                                    tapeHead = previousTape;
                                 }
 
                                 state = list->newState;
@@ -344,13 +328,14 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
 
                     }
 
-                    //TODO how to break while??
                     if (checker2) {
                         break;
                     }
 
                 } //while(1) ends
 
+
+                //check the virtual transition to the reject state.
                 if (!checker) {
                     virtual_transition = 1;
                     break;
