@@ -1,14 +1,17 @@
-states 7
+states 8
 init
 lookForClosingParen
+lookForClosingParen_init
 lookForOpenParen
 goToStart
 checkComplete
 accept +
 reject -
 alphabet 3 ( ) $
-init ( lookForClosingParen ( R
+init ( lookForClosingParen_init _ R
 init _ checkComplete $ R
+lookForClosingParen_init ( lookForClosingParen_init ( R
+lookForClosingParen_init ) goToStart $ L
 lookForClosingParen ( lookForClosingParen ( R
 lookForClosingParen $ lookForClosingParen $ R
 lookForClosingParen _ checkComplete $ L
