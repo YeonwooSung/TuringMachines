@@ -157,7 +157,7 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
 
     //read line to get the number of states
     if (getline(&line, &len, f) != -1) {
-        if (strcmp(line, "\n") == 0) {
+        if (strcmp(line, "") == 0) {
             printf("input error\n");
             exit(2);
         }
@@ -364,7 +364,7 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
 
     //use getline() to read a line from the description file
     while (getline(&line, &len, f) != -1) {
-        if (strcmp(line, "\n") == 0) {
+        if (strcmp(line, "") == 0) {
             continue;
         }
 
