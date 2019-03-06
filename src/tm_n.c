@@ -54,6 +54,14 @@ Tape *copyTape(Tape *tape) {
 }
 
 
+/**
+ * This function runs the nondeterminant turing machine.
+ *
+ * @param {state} A pointer that points the head node of linked list of turing machine states.
+ * @param {tape} A pointer that points the head node of the linked list of input tape.
+ * @param {entirelyBlank} 1 if all input symbols are blank. Otherwise, 0.
+ * @return Suitable exit code
+ */
 char run_n(State *state, Tape *tape, char entirelyBlank) {
     size_t num_of_transitions = 0;
     char virtual_transition = 0;
