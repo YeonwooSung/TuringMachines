@@ -364,7 +364,9 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
 
     //use getline() to read a line from the description file
     while (getline(&line, &len, f) != -1) {
-        if (strcmp(line, "") == 0) {
+        if (strcmp(line, "\n") == 0) {
+            continue;
+        } else if (strcmp(line, "") == 0) {
             continue;
         }
 
