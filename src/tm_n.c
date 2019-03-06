@@ -22,10 +22,11 @@ typedef struct state_set {
  *
  * @param {tape} a pointer that points to the linked list of tape that should be copied.
  */
-Tape *copyTape(Tape *tape) {
+Tape *copyTape(Tape *tape, Tape *currentNode) {
 
     // check if the given list is null
     if (tape) {
+        Tape *head = tape;
         Tape *newTape = (Tape *) malloc(sizeof(Tape));
         newTape->prev = NULL;
         newTape->c = tape->c;
@@ -45,12 +46,59 @@ Tape *copyTape(Tape *tape) {
         }
         temp->next = NULL;
 
+        tape = head; //set the pointer to the head node of the linked list
+
+        while (tape == currentNode) {
+            tape = tape->next;
+            newTape = newTape->next;
+        }
+
         //return the pointer that points to the copied linked list
         return newTape;
     } else {
         return NULL;
     }
 
+}
+
+
+/**
+ * 
+ */
+void executeNondeterministicTM(Set *set, Tape *tape) {
+    State *state;
+    Set *setHead = set; //to store the head node of the linked list of set of states
+
+    // use the endless loop to run the turing machine until it gets the accepted (or rejected) state.
+    while (1) {
+
+        Set *newNode;
+
+        //iterate the set of states
+        while(set) {
+
+            State *s = set->state;
+            TList *list = state->list;
+
+            char targetSymbol = tape->c;
+
+            //iterate the transition list of current state
+            while (list) {
+                if (list->inputSymbol != targetSymbol) {
+                    list = list->next;
+                } else {
+
+                    //TODO
+
+                }
+            }
+
+            set = set->next; //move to next state
+
+        } //for loop ends
+
+        set = setHead; //reset the pointer to the head node
+    }
 }
 
 
@@ -71,39 +119,17 @@ char run_n(State *state, Tape *tape, char entirelyBlank) {
     set->state = state;
     set->next = NULL;
 
-    Set *setHead = set; //to store the head node of the linked list of set of states
-
-
     // Check if the linked list of tape is null
     if (tape) {
-        while (1) {
-
-            //iterate the set of states
-            while(set) {
-
-                State *s = set->state;
-                TList *list = state->list;
-
-                //iterate the transition list of current state
-                while (list) {
-                    if (list->inputSymbol != tape->c) {
-                        list = list->next;
-                    } else {
-
-                        //TODO how does the nondeterministic TM process the tape??
-
-                    }
-                }
-
-                set = set->next; //move to next state
-
-            } //for loop ends
-
-            set = setHead; //reset the pointer to the head node
-        }
-
+        executeNondeterministicTM(set, tape);
     } else {
-        //
+        tape = (Tape *) malloc(sizeof(Tape));
+
+        tape->prev = NULL;
+        tape->next = NULL;
+        tape->c = '_';
+
+        executeNondeterministicTM(set, tape);
     }
 
     char ret = 0;
