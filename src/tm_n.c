@@ -8,8 +8,50 @@
 // set of states
 typedef struct state_set {
     State *state;
+    Tape *tape;
     state_set *next;
 } Set;
+
+/**
+ * The aim of this function is to copy the linked list of tape.
+ *
+ * The nondeterministic turing machine could have a set of states.
+ * And each state could have it's own tape to process.
+ * The main aim of this function is to copy the linked list of tape, so that
+ * all states in the set could have their own tape.
+ *
+ * @param {tape} a pointer that points to the linked list of tape that should be copied.
+ */
+Tape *copyTape(Tape *tape) {
+
+    // check if the given list is null
+    if (tape) {
+        Tape *newTape = (Tape *) malloc(sizeof(Tape));
+        newTape->prev = NULL;
+        newTape->c = tape->c;
+
+        Tape *temp = newTape;
+        tape = tape->next;
+
+        //use while loop to iterate linked list of tape
+        while (tape) {
+            Tape *t = (Tape *) malloc(sizeof(Tape));
+            t->c = tape->c;
+            t->prev = temp;
+            temp->next = t;
+
+            temp = t;
+            tape = tape->next;
+        }
+        temp->next = NULL;
+
+        //return the pointer that points to the copied linked list
+        return newTape;
+    } else {
+        return NULL;
+    }
+
+}
 
 
 char run_n(State *state, Tape *tape, char entirelyBlank) {
