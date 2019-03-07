@@ -59,6 +59,10 @@ Tape *copyTape(Tape *currentNode) {
 
     Tape *tape = rewindTape(currentNode); //rewind the tape to get the head node of the linked list of tape
 
+    if (tape == currentNode) {
+        printf("same!\n");
+    }
+
     // check if the given list is null
     if (tape) {
         Tape *head = tape;
@@ -69,6 +73,7 @@ Tape *copyTape(Tape *currentNode) {
         Tape *temp = newTape;
         tape = tape->next;
 
+
         //use while loop to iterate linked list of tape
         while (tape) {
             Tape *t = (Tape *) malloc(sizeof(Tape));
@@ -76,7 +81,7 @@ Tape *copyTape(Tape *currentNode) {
             t->prev = temp;
             temp->next = t;
 
-            temp = t;
+            temp = temp->next;
             tape = tape->next;
         }
 
@@ -84,7 +89,7 @@ Tape *copyTape(Tape *currentNode) {
 
         tape = head; //set the pointer to the head node of the linked list
 
-        while (tape == currentNode) {
+        while (tape != currentNode) {
             tape = tape->next;
             newTape = newTape->next;
         }
@@ -170,6 +175,14 @@ char executeNondeterministicTM(Set *set, size_t *num_of_transitions) {
                     list = list->next;
                 } else {
 
+                    // check if the new state is an accepted state
+                    if (list->newState->accept == 'a') {
+                        //if it's an accepted state, then return 0, which is the exit code for the "accepted"
+                        return 0;
+                    } else if (list->newState->accept == 'r') {
+                        //TODO
+                    }
+
                     // check if there are more than one transitions that take same state and tape symbol as input
                     if (isFound) {
 
@@ -188,6 +201,9 @@ char executeNondeterministicTM(Set *set, size_t *num_of_transitions) {
                             lastNewNode->next = tempSet;
                             lastNewNode = tempSet;
 
+                            //move the tape and add new tape node if required
+                            tempSet->tape = moveTape_n(newTape, list->move);
+
                         } else {
 
                             newNode = (Set *) malloc(sizeof(Set));
@@ -197,10 +213,11 @@ char executeNondeterministicTM(Set *set, size_t *num_of_transitions) {
 
                             lastNewNode = newNode;
 
+                            //move the tape and add new tape node if required
+                            newNode->tape = moveTape_n(newTape, list->move);
+
                         }
 
-                        //move the tape and add new tape node if required
-                        newNode->tape = moveTape_n(newTape, list->move);
 
                     } else {
 
@@ -212,7 +229,7 @@ char executeNondeterministicTM(Set *set, size_t *num_of_transitions) {
 
                     }
 
-                    isFound++;
+                    isFound += 1;
 
                     list = list->next;
 
@@ -229,12 +246,6 @@ char executeNondeterministicTM(Set *set, size_t *num_of_transitions) {
                     setHead = set;
                 }
             } else {
-
-                // check if the current state is an accepted state
-                if (set->state->accept == 'a') {
-                    //if it's an accepted state, then return 0, which is the exit code for the "accepted"
-                    return 0;
-                }
 
                 isFound = 0;
 
