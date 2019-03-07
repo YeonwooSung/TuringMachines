@@ -12,7 +12,12 @@ typedef struct state_set {
     struct state_set *next;
 } Set;
 
-
+/**
+ * Rewind the tape.
+ *
+ * @param {tape} The linked list of tape.
+ * @return The head node of the linked list.
+ */
 Tape *rewindTape(Tape *tape) {
     if (tape) {
         while (tape->prev) {
@@ -26,6 +31,9 @@ Tape *rewindTape(Tape *tape) {
 }
 
 
+/**
+ * This function frees the allocated memory of the linked list of tape.
+ */
 void freeTape(Tape *tape) {
     Tape *t = rewindTape(tape);
 
@@ -35,6 +43,13 @@ void freeTape(Tape *tape) {
     }
 }
 
+
+/**
+ * This function removes the rejected state from the set.
+ *
+ * @param {set} A node that should be removed from the set.
+ * @return The next node.
+ */
 Set *removeRejectedStateFromSet(Set *set) {
     Set *next = set->next;
 
