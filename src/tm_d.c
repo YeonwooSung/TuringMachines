@@ -93,6 +93,12 @@ Tape *moveTape(Tape *tape, TList *list) {
 }
 
 
+/**
+ * This function checks if the current state is accepted or rejected.
+ *
+ * @param {state} The state that should be checked
+ * @return If so, returns 1. Otherwise, returns 0.
+ */
 char isAcceptedOrRejected(State *state) {
     return (state->accept == 'a' || state->accept == 'r') ? 1 : 0;
 }
@@ -101,7 +107,10 @@ char isAcceptedOrRejected(State *state) {
 /**
  * Runs the deterministic turing machine.
  *
- * @param {}
+ * @param {state} The linked list of states
+ * @param {tape} The linked list of tape
+ * @param {entirelyBlank} A boolean value to check if the input tape is entirelyBlank.
+ * @return Suitable exit code.
  */
 char run_d(State *state, Tape *tape, char entirelyBlank) {
     size_t num_of_transitions = 0;
