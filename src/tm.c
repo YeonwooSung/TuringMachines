@@ -246,11 +246,22 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
                     free(splited);
 
                 } else {
-                    s_tmp->accept = 0;
-                    s_tmp->name = strdup(line);
+                    size_t counter = 0;
+                    char **splited = splitStr(line, ' ', &counter);
 
-                    //remove the newline character from the state name
-                    s_tmp->name[(strlen(s_tmp->name) - 1)] = '\0';
+                    s_tmp->accept = 0;
+                    s_tmp->name = strdup(splited[0]);
+
+                    for (int a = 1; a < counter; a++) {
+                        free(splited[a]);
+                    }
+
+                    free(splited);
+
+                    if (counter == 1) {
+                        //remove the newline character from the state name
+                        s_tmp->name[(strlen(s_tmp->name) - 1)] = '\0';
+                    }
                 }
 
                 s_tmp->next = NULL; //set the next node as NULL
@@ -614,6 +625,9 @@ int main(int argc, char *argv[]) {
             freeAlphabets(list);
 
             //TODO nondeterministic TM
+            char ret = run_n(s, tape, entirelyBlanks);
+
+            exit(ret);
 
         } else {
 
@@ -650,7 +664,11 @@ int main(int argc, char *argv[]) {
                 //free the alphabet list
                 freeAlphabets(list);
 
+                char entirelyBlanks = 1;
+
                 //TODO run_n()
+                char ret = run_n(s, NULL, entirelyBlanks);
+                exit(ret);
             }
 
         }
