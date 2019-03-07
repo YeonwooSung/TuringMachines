@@ -214,6 +214,8 @@ char executeNondeterministicTM(Set *set, size_t *num_of_transitions) {
 
                     isFound++;
 
+                    list = list->next;
+
                 }
             }
 
@@ -234,7 +236,6 @@ char executeNondeterministicTM(Set *set, size_t *num_of_transitions) {
                     return 0;
                 }
 
-                *num_of_transitions += isFound;
                 isFound = 0;
 
                 latestNode = set;
@@ -259,6 +260,8 @@ char executeNondeterministicTM(Set *set, size_t *num_of_transitions) {
             }
         }
 
+        *num_of_transitions += 1;
+
         set = setHead; //reset the pointer to the head node
     }
 }
@@ -275,9 +278,6 @@ char executeNondeterministicTM(Set *set, size_t *num_of_transitions) {
 char run_n(State *state, Tape *tape, char entirelyBlank) {
     //this will be used to count the number of performed transitions
     size_t num_of_transitions = 0;
-
-    //a boolean value to check the virtual transition
-    char virtual_transition = 0;
 
     //store the pointer that points to the head node of the linked list of tape
     Tape *tapeHead = tape;
