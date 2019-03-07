@@ -39,9 +39,17 @@ typedef struct tape {
 } Tape;
 
 
+
 /* function prototypes */
+
+//functions in the tm_d.c
 Tape *readTheInputTape(Alphabets *list, FILE *f, char *check);
 char run_d(State *state, Tape *tape, char entirelyBlank);
+
+//functions in the tm.c
 void validateSymbolFromAlphabetList(Alphabets *list, char symbol);
+
+//functions in the tm_n.c
+char run_n(State *state, Tape *tape, char entirelyBlank);
 
 #endif //TM_H

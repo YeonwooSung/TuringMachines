@@ -9,8 +9,41 @@
 typedef struct state_set {
     State *state;
     Tape *tape;
-    state_set *next;
+    struct state_set *next;
 } Set;
+
+
+Tape *rewindTape(Tape *tape) {
+    if (tape) {
+        while (tape->prev) {
+            tape = tape->prev;
+        }
+
+        return tape;
+    } else {
+        return NULL;
+    }
+}
+
+
+void freeTape(Tape *tape) {
+    Tape *t = rewindTape(tape);
+
+    while (t) {
+        free(t);
+        t = t->next;
+    }
+}
+
+Set *removeRejectedStateFromSet(Set *set) {
+    Set *next = set->next;
+
+    freeTape(set->tape);
+    free(set);
+
+    return next;
+}
+
 
 /**
  * The aim of this function is to copy the linked list of tape.
@@ -20,9 +53,11 @@ typedef struct state_set {
  * The main aim of this function is to copy the linked list of tape, so that
  * all states in the set could have their own tape.
  *
- * @param {tape} a pointer that points to the linked list of tape that should be copied.
+ * @param {currentNode} a pointer that points to the linked list of tape that should be copied.
  */
-Tape *copyTape(Tape *tape, Tape *currentNode) {
+Tape *copyTape(Tape *currentNode) {
+
+    Tape *tape = rewindTape(currentNode); //rewind the tape to get the head node of the linked list of tape
 
     // check if the given list is null
     if (tape) {
@@ -44,6 +79,7 @@ Tape *copyTape(Tape *tape, Tape *currentNode) {
             temp = t;
             tape = tape->next;
         }
+
         temp->next = NULL;
 
         tape = head; //set the pointer to the head node of the linked list
@@ -63,39 +99,165 @@ Tape *copyTape(Tape *tape, Tape *currentNode) {
 
 
 /**
+ * The aim of this function is to move the tape to corresponding direction, and add new node if required.
+ *
+ * @param {tape} A linked list of tape
+ * @param {move} a move direction (L or R)
+ * @return The next (or previous) tape node (depends on the move direction).
+ */
+Tape *moveTape_n(Tape *tape, char move) {
+    Tape *movedNode;
+
+    switch (move) {
+        case 'L' :
+            if (tape->prev) {
+                movedNode = tape->prev;
+            } else {
+                movedNode = tape;
+            }
+
+            break;
+        case 'R' : 
+            if (tape->next) {
+                movedNode = tape->next;
+            } else {
+                movedNode = (Tape *) malloc(sizeof(Tape));
+
+                movedNode->c = '_';
+                movedNode->next = NULL;
+                tape->next = movedNode;
+                movedNode->prev = tape;
+            }
+
+            break;
+        default : 
+            printf("input error\n");
+            exit(2);
+    }
+
+    return movedNode;
+}
+
+
+/**
  * 
  */
-void executeNondeterministicTM(Set *set, Tape *tape) {
-    State *state;
+char executeNondeterministicTM(Set *set, size_t *num_of_transitions) {
     Set *setHead = set; //to store the head node of the linked list of set of states
 
     // use the endless loop to run the turing machine until it gets the accepted (or rejected) state.
     while (1) {
 
-        Set *newNode;
+        Set *newNode = NULL;
+        Set *lastNewNode = NULL;
+        Set *latestNode = NULL;
+
+        size_t isFound = 0;
 
         //iterate the set of states
         while(set) {
 
             State *s = set->state;
-            TList *list = state->list;
+            TList *list = s->list;
 
-            char targetSymbol = tape->c;
+            char targetSymbol = set->tape->c;
 
             //iterate the transition list of current state
             while (list) {
+
+                //check if there is any transition that takes the current state and tape symbol as input
                 if (list->inputSymbol != targetSymbol) {
                     list = list->next;
                 } else {
 
-                    //TODO
+                    // check if there are more than one transitions that take same state and tape symbol as input
+                    if (isFound) {
+
+                        //add new state to the set
+                        Tape *newTape = copyTape(set->tape);
+                        newTape->c = list->outputSymbol;
+
+                        // check if there are more than 2 transitions that take same state and tape symbol as input
+                        if (newNode) {
+
+                            Set *tempSet = (Set *) malloc(sizeof(Set));
+                            tempSet->state = list->newState;
+                            tempSet->tape = newTape;
+                            tempSet->next = NULL;
+
+                            lastNewNode->next = tempSet;
+                            lastNewNode = tempSet;
+
+                        } else {
+
+                            newNode = (Set *) malloc(sizeof(Set));
+                            newNode->state = list->newState;
+                            newNode->tape = newTape;
+                            newNode->next = NULL;
+
+                            lastNewNode = newNode;
+
+                        }
+
+                        //move the tape and add new tape node if required
+                        newNode->tape = moveTape_n(newTape, list->move);
+
+                    } else {
+
+                        set->tape->c = list->outputSymbol;
+                        set->state = list->newState;
+
+                        //move the tape and add new tape node if required
+                        set->tape = moveTape_n(set->tape, list->move);
+
+                    }
+
+                    isFound++;
 
                 }
             }
 
-            set = set->next; //move to next state
+            if (!isFound) {
+                //when the virtual transition occurred, remove the node from the set of state
+                set = removeRejectedStateFromSet(set);
 
-        } //for loop ends
+                if (latestNode) {
+                    latestNode->next = set;
+                } else {
+                    setHead = set;
+                }
+            } else {
+
+                // check if the current state is an accepted state
+                if (set->state->accept == 'a') {
+                    //if it's an accepted state, then return 0, which is the exit code for the "accepted"
+                    return 0;
+                }
+
+                *num_of_transitions += isFound;
+                isFound = 0;
+
+                latestNode = set;
+                set = set->next; //move to next state
+
+            }
+
+        } //while loop ends
+
+
+        //add new nodes to the set of states
+        if (latestNode) {
+            if (newNode) {
+                latestNode->next = newNode; //expand the set
+            }
+        } else {
+            if (newNode) {
+                setHead = newNode;
+            } else {
+                //if there is no more nodes in the set, then that means all states are rejected
+                return 1; //return 1, which is the exit code for not accepted
+            }
+        }
 
         set = setHead; //reset the pointer to the head node
     }
@@ -111,17 +273,26 @@ void executeNondeterministicTM(Set *set, Tape *tape) {
  * @return Suitable exit code
  */
 char run_n(State *state, Tape *tape, char entirelyBlank) {
+    //this will be used to count the number of performed transitions
     size_t num_of_transitions = 0;
+
+    //a boolean value to check the virtual transition
     char virtual_transition = 0;
+
+    //store the pointer that points to the head node of the linked list of tape
     Tape *tapeHead = tape;
 
     Set *set = (Set *) malloc(sizeof(Set));
     set->state = state;
     set->next = NULL;
 
+    char ret;
+
     // Check if the linked list of tape is null
     if (tape) {
-        executeNondeterministicTM(set, tape);
+        set->tape = tape;
+
+        ret = executeNondeterministicTM(set, &num_of_transitions);
     } else {
         tape = (Tape *) malloc(sizeof(Tape));
 
@@ -129,10 +300,18 @@ char run_n(State *state, Tape *tape, char entirelyBlank) {
         tape->next = NULL;
         tape->c = '_';
 
-        executeNondeterministicTM(set, tape);
+        set->tape = tape;
+
+        ret = executeNondeterministicTM(set, &num_of_transitions);
     }
 
-    char ret = 0;
+    if (ret) {
+        printf("not accepted\n");
+    } else {
+        printf("accepted\n");
+    }
+
+    printf("%lu\n", num_of_transitions);
 
     return ret;
 }
