@@ -195,58 +195,61 @@ char executeNondeterministicTM(Set *set, size_t *num_of_transitions) {
                         //if it's an accepted state, then return 0, which is the exit code for the "accepted"
                         return 0;
                     } else if (list->newState->accept == 'r') {
+
                         //TODO
-                    }
-
-                    // check if there are more than one transitions that take same state and tape symbol as input
-                    if (isFound) {
-
-                        //add new state to the set
-                        Tape *newTape = copyTape(set->tape);
-                        newTape->c = list->outputSymbol;
-
-                        // check if there are more than 2 transitions that take same state and tape symbol as input
-                        if (newNode) {
-
-                            Set *tempSet = (Set *) malloc(sizeof(Set));
-                            tempSet->state = list->newState;
-                            tempSet->tape = newTape;
-                            tempSet->next = NULL;
-
-                            lastNewNode->next = tempSet;
-                            lastNewNode = tempSet;
-
-                            //move the tape and add new tape node if required
-                            tempSet->tape = moveTape_n(newTape, list->move);
-
-                        } else {
-
-                            newNode = (Set *) malloc(sizeof(Set));
-                            newNode->state = list->newState;
-                            newNode->tape = newTape;
-                            newNode->next = NULL;
-
-                            lastNewNode = newNode;
-
-                            //move the tape and add new tape node if required
-                            newNode->tape = moveTape_n(newTape, list->move);
-
-                        }
-
 
                     } else {
 
-                        set->tape->c = list->outputSymbol;
-                        set->state = list->newState;
+                        // check if there are more than one transitions that take same state and tape symbol as input
+                        if (isFound) {
 
-                        //move the tape and add new tape node if required
-                        set->tape = moveTape_n(set->tape, list->move);
+                            //add new state to the set
+                            Tape *newTape = copyTape(set->tape);
+                            newTape->c = list->outputSymbol;
 
+                            // check if there are more than 2 transitions that take same state and tape symbol as input
+                            if (newNode) {
+
+                                Set *tempSet = (Set *) malloc(sizeof(Set));
+                                tempSet->state = list->newState;
+                                tempSet->tape = newTape;
+                                tempSet->next = NULL;
+
+                                lastNewNode->next = tempSet;
+                                lastNewNode = tempSet;
+
+                                //move the tape and add new tape node if required
+                                tempSet->tape = moveTape_n(newTape, list->move);
+
+                            } else {
+
+                                newNode = (Set *) malloc(sizeof(Set));
+                                newNode->state = list->newState;
+                                newNode->tape = newTape;
+                                newNode->next = NULL;
+
+                                lastNewNode = newNode;
+
+                                //move the tape and add new tape node if required
+                                newNode->tape = moveTape_n(newTape, list->move);
+
+                            }
+
+
+                        } else {
+
+                            set->tape->c = list->outputSymbol;
+                            set->state = list->newState;
+
+                            //move the tape and add new tape node if required
+                            set->tape = moveTape_n(set->tape, list->move);
+
+                        }
+
+                        isFound += 1;
+
+                        list = list->next;
                     }
-
-                    isFound += 1;
-
-                    list = list->next;
 
                 }
             }
