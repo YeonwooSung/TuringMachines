@@ -373,11 +373,14 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
         tmp->next = NULL;
     }
 
-    //use getline() to read a line from the description file
+    /*
+     * Use getline() to read a line from the description file
+     * The read line will be used to make a new node for transition.
+     */
     while (getline(&line, &len, f) != -1) {
         if (strcmp(line, "\n") == 0) {
             continue;
-        } else if (strcmp(line, "") == 0) {
+        } else if (strcmp(line, " \n") == 0) {
             continue;
         }
 
