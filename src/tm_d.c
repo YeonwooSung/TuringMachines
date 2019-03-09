@@ -268,7 +268,7 @@ char run_d(State *state, Tape *tape, char entirelyBlank) {
             } //inner while loop ends
 
 
-            if (foundTransition != 1) { //TODO
+            if (foundTransition != 1) {
                 virtual_transition = 1;
                 break;
             }

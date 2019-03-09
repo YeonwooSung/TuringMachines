@@ -215,7 +215,7 @@ Alphabets *readDescription(char *filePath, char isDeterministic, State *s) {
                 }
             }
 
-            if (isAllWhiteSpace) { //TODO need to test
+            if (isAllWhiteSpace) {
                 i -= 1;
                 continue;
             }
@@ -624,7 +624,6 @@ int main(int argc, char *argv[]) {
             //free the alphabet list
             freeAlphabets(list);
 
-            //TODO nondeterministic TM
             char ret = run_n(s, tape, entirelyBlanks);
 
             exit(ret);
@@ -666,7 +665,7 @@ int main(int argc, char *argv[]) {
 
                 char entirelyBlanks = 1;
 
-                //TODO run_n()
+                // run the nondeterministic TM
                 char ret = run_n(s, NULL, entirelyBlanks);
                 exit(ret);
             }
