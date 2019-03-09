@@ -196,7 +196,14 @@ char executeNondeterministicTM(Set *set, size_t *num_of_transitions) {
                         return 0;
                     } else if (list->newState->accept == 'r') {
 
-                        //TODO
+                        //when the virtual transition occurred, remove the node from the set of state
+                        set = removeRejectedStateFromSet(set);
+
+                        if (latestNode) {
+                            latestNode->next = set;
+                        } else {
+                            setHead = set;
+                        }
 
                     } else {
 
