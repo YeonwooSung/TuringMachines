@@ -23,4 +23,4 @@ goToStart ) goToStart ) L
 goToStart $ goToStart $ L
 goToStart _ lookForClosingParen _ R
 checkComplete $ checkComplete $ L
-checkComplete _ accept _ R
+checkComplete _ accept $ R
