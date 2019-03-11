@@ -610,24 +610,28 @@ int main(int argc, char *argv[]) {
 
             Alphabets *list = readDescription(argv[2], 0, s);
 
-            FILE *f = fopen(argv[3], "rb");
+            char ret;
 
-            if (f == NULL) {
-                exit(3);
+            // use for loop to read multiple input tape files.
+            for (int i = 3; i < argc; i++) {
+                FILE *f = fopen(argv[i], "rb");
+
+                if (f == NULL) {
+                    exit(3);
+                }
+
+                char entirelyBlanks;
+
+                Tape *tape = readTheInputTape(list, f, &entirelyBlanks);
+
+                fclose(f); //close the file pointer when the program finished reading the file
+
+                ret = run_n(s, tape, entirelyBlanks);
+
             }
-
-            char entirelyBlanks;
-
-            //TODO need to make the nondet-tm to read multiple tape files
-
-            Tape *tape = readTheInputTape(list, f, &entirelyBlanks);
-
-            fclose(f); //close the file pointer when the program finished reading the file
 
             //free the alphabet list
             freeAlphabets(list);
-
-            char ret = run_n(s, tape, entirelyBlanks);
 
             exit(ret);
 
