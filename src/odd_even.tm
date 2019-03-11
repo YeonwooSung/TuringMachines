@@ -14,7 +14,6 @@ first_odd _ accept _ R
 even 1 odd # R
 even # even # R
 even _ go_back _ L
-even _ go_back _ L
 odd 1 even 1 R
 odd # odd # R
 go_back 1 go_back 1 L
