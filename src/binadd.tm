@@ -1,4 +1,4 @@
-states 24
+states 23
 init
 f0
 fc0
@@ -11,7 +11,6 @@ s_is_r_0
 s_is_r_1
 s_is_rc_0
 goBack_s_is_r
-checkAll_s_is_r
 s_is_rc_1
 f1
 fc1
@@ -60,9 +59,6 @@ s_is_r_0 # s_is_rc_0 # R
 s_is_rc_0 * s_is_rc_0 * R
 s_is_rc_0 0 goBack_s_is_r * L
 s_is_rc_0 _ goBack_s_is_r * L
-checkAll_s_is_r # checkAll_s_is_r # L
-checkAll_s_is_r * checkAll_s_is_r * L
-checkAll_s_is_r $ success $ R
 goBack_s_is_r # goBack_s_is_r # L
 goBack_s_is_r 0 goBack_s_is_r 0 L
 goBack_s_is_r 1 goBack_s_is_r 1 L
