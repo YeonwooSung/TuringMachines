@@ -160,7 +160,11 @@ Tape *moveTape_n(Tape *tape, char move) {
 
 
 /**
- * 
+ * The aim of this function is to execute the nondeterministic turing machine.
+ *
+ * @param {set} A linked list of set that contains states.
+ * @param {num_of_transitions} the aim of this variable is to count the number of transitions.
+ * @return The suitable exit code. 0 for accepted, and 1 for rejected.
  */
 char executeNondeterministicTM(Set *set, size_t *num_of_transitions) {
     Set *setHead = set; //to store the head node of the linked list of set of states
