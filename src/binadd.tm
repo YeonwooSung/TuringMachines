@@ -23,7 +23,6 @@ subtract1
 success +
 reject -
 alphabet 5 0 1 # $ *
-init _ success _ R
 init 0 f0 $ R
 init 1 f1 $ R
 init # s_is_r # R
