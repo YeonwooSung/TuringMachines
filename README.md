@@ -31,7 +31,7 @@ A description file is a file that contains the line that describe the turing mac
 Basically, the desciption file should contain the number of states, name of each state, accepted and rejected state, and all transitions.
 
 The format of each line for transition should be something like this:
-    <state1> <tapeinput> <state2> <tapeoutput> <move>
+    < state1 > < tapeinput > < state2 > < tapeoutput > < move >
 
 
 ## 1. What is a turing machine?
