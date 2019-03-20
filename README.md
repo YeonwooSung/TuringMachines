@@ -25,6 +25,15 @@ To run the executable file "runtm", you need to follow one of things on below.
         With this command, you would be able to run non-deterministic turing machine with multiple tape files.
 
 
+### What is a description file?
+
+A description file is a file that contains the line that describe the turing machine.
+Basically, the desciption file should contain the number of states, name of each state, accepted and rejected state, and all transitions.
+
+The format of each line for transition should be something like this:
+    <state1> <tapeinput> <state2> <tapeoutput> <move>
+
+
 ## 1. What is a turing machine?
 
 A Turing machine is a type of machine that is more powerful than a PDA: it
